@@ -18,11 +18,6 @@ final class AppFactory
 	public static function getApp()
 	{
 		/**
-		 * Claim our free autloader!
-		 */
-		$loader = require dirname(__DIR__) . DS . 'vendor' . DS . 'autoload.php';
-		
-		/**
 		 * Application singleton
 		 */
         static $app = null; 
@@ -43,7 +38,7 @@ final class AppFactory
                 $app = new \Chubby\ChubbyApp();
             }
 			
-			$app->loader = $loader;
+			// $app->loader = $loader;
         }
 		
         return $app;
