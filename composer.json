@@ -1,0 +1,23 @@
+{
+    "name": "a3gz/chubby",
+    "type": "library",
+    "description": "Chubby is a PHP framework built around Slim that propose one way to organize code.",
+    "keywords": ["framework"],
+    "homepage": "http://www.roetal.com/chubby",
+    "license": "MIT",
+	"authors": [
+		{
+            "name": "Alejandro Arbiza",
+            "email": "alejandro@roetal.com",
+            "homepage": "https://www.roetal.com"
+		}
+	],
+    "require": {
+        "slim/slim": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Chubby\\": "Chubby"
+        }
+    }
+}
