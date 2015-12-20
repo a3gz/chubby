@@ -79,19 +79,9 @@ final class ChubbyApp
 	public function run( $appNamespace = self::DEFAULT_NAMESPACE )
 	{
 		/**
-		 * Each application must exist inside its own namespace. Chubby uses that namespace to search
-		 * for modules. 
+		 * Each application must exist inside its own namespace. Chubby uses that namespace to search for modules. 
 		 */
 		$this->appNamespace = $appNamespace;
-		
-		if ( $this->isDebug() )
-		{
-			if ( $this->appNamespace == self::DEFAULT_NAMESPACE )
-			{
-				$this->logService()->debug( "Using default namespace: {$this->appNamespace}" );
-			}
-		}
-		
 		
 		$this->modules = \Chubby\ModuleLoader::load();
 		
@@ -118,16 +108,16 @@ final class ChubbyApp
 				{
 					if ( !method_exists( $module, 'newSlim' ) )
 					{
-						throw new \Exception( "{$module->getName()} MUST implement the newSlim() method and return the resulting Slim\App." );
+						throw new \Exception( "{$module->getName()} MUST implement the newSlim() method and return an instance of Slim\App." );
 					}
 					
-					$r = $module->newSlim();
-					if ( !$this->isValidSlimApp( $r ) )
+					$slim = $module->newSlim();
+					if ( !$this->isValidSlimApp( $slim ) )
 					{
-						throw new \Exception( "MainModule::buildSlim() MUST return an instance of Slim\App" );
+						throw new \Exception( "MainModule::newSlim() MUST return an instance of Slim\App" );
 					}
 					
-					$this->slim = $r;
+					$this->slim = $slim;
 				}
 				
 				$module->init();
