@@ -67,7 +67,7 @@ final class ChubbyApp
 	 */
 	private function isValidSlimApp( $p )
 	{
-		return ( isset($p) && ($r instanceof \Slim\App) );
+		return ( isset($p) && ($p instanceof \Slim\App) );
 	} // isValidSlimApp()
 	
 	
@@ -103,33 +103,38 @@ final class ChubbyApp
 		/**
 		 * Initialize the modules following the order given by each module's priority.
 		 */
-		foreach( $this->modules as $module )
+		foreach( $this->modules as $priority => $modules )
 		{
-			$module->setApp( $this );
-			
-			/**
-			 * The MainModule must create the Slim\App instance. 
-			 * Why not create it here? Because the programmer should be able to pass in containers or settings as 
-			 * they would do in a plain Slim application.
-			 */
-			if ( $module->isMain() )
+			foreach( $modules as $module )
 			{
-				if ( !class_exists( $module, 'newSlim' ) )
+				$module->setApp( $this );
+				
+				/**
+				 * The MainModule must create the Slim\App instance. 
+				 * Why not create it here? Because the programmer should be able to pass in containers or settings as 
+				 * they would do in a plain Slim application.
+				 */
+				if ( $module->isMain() )
 				{
-					throw new \Exception( "{$module->getName()} MUST implement the newSlim() method and return the resulting Slim\App." );
+					if ( !method_exists( $module, 'newSlim' ) )
+					{
+						throw new \Exception( "{$module->getName()} MUST implement the newSlim() method and return the resulting Slim\App." );
+					}
+					
+					$r = $module->newSlim();
+					if ( !$this->isValidSlimApp( $r ) )
+					{
+						throw new \Exception( "MainModule::buildSlim() MUST return an instance of Slim\App" );
+					}
+					
+					$this->slim = $r;
 				}
 				
-				$r = $module->buildSlim();
-				if ( !$this->isValidSlimApp( $r ) )
-				{
-					throw new \Exception( "MainModule::buildSlim() MUST return an instance of Slim\App" );
-				}
-				
-				$this->slim = $r;
+				$module->init();
 			}
-			
-			$module->init();
 		}
+		
+		$this->slim->run();
 		
 		return $this;
 	} // run()
