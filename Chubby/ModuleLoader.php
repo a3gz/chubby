@@ -42,7 +42,7 @@ final class ModuleLoader
 			}
 			
 			$module = new $fullClassName();
-			$priority = $module->priority();
+			$priority = $module->getPriority();
 			if ($priority < 0) $priority = 0; // Highest allowed priority
 			
 			$modules[$priority][$fullClassName] = $module;
