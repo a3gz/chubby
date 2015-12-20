@@ -33,12 +33,12 @@ final class ModuleLoader
 
 			$fullClassName = \Chubby\AppFactory::getApp()->appNamespace() . "\\Modules\\{$fileInfo->getBasename()}\\{$className}";
 			
-			$moduleObject = new \ReflectionClass($fullClassName);
+			$moduleObject = new $fullClassName();
 			
-			$moduleInterfaceName = 'Chubby\Stock\ModuleInterface';
-			if ( !($moduleObject instanceof Chubby\Stock\ChubbyModule ) )
+			$required = 'Chubby\Stock\ChubbyModule';
+			if ( !($moduleObject instanceof \Chubby\Stock\ChubbyModule ) )
 			{
-				throw new \Exception( "Module class {$fullClassName} MUST extend {$moduleInterfaceName}." );
+				throw new \Exception( "Module class {$fullClassName} MUST extend {$required}." );
 			}
 			
 			$module = new $fullClassName();
