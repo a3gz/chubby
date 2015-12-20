@@ -35,8 +35,8 @@ final class ModuleLoader
 			
 			$moduleObject = new $fullClassName();
 			
-			$required = 'Chubby\Stock\ChubbyModule';
-			if ( !($moduleObject instanceof \Chubby\Stock\ChubbyModule ) )
+			$required = 'Chubby\ChubbyModule';
+			if ( !($moduleObject instanceof \Chubby\ChubbyModule ) )
 			{
 				throw new \Exception( "Module class {$fullClassName} MUST extend {$required}." );
 			}

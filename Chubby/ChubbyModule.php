@@ -6,7 +6,7 @@
  * @copyright Copyright (c) Alejandro Arbiza
  * @license   http://www.roetal.com/chubby-framework/license (MIT License)
  */
-namespace Chubby\Stock;
+namespace Chubby;
 
 abstract class ChubbyModule
 {
@@ -29,7 +29,7 @@ abstract class ChubbyModule
 	/**
 	 *
 	 */
-	private function getFullyQualifiedCallable( $callable )
+	protected function getFullyQualifiedCallable( $callable )
 	{
 		$r = new \ReflectionClass( $this );
 		
@@ -214,6 +214,24 @@ abstract class ChubbyModule
 		return $this->app->getSlim()->any($pattern, $callable);
     }
 	 
+	 
+    /**
+     * Route Groups
+     *
+     * This method accepts a route pattern and a callback. All route
+     * declarations in the callback will be prepended by the group(s)
+     * that it is in.
+     *
+     * @param string   $pattern
+     * @param callable $callable
+     *
+     * @return RouteGroupInterface
+     */
+    public function group($pattern, $callable)
+    {
+		$callable = $this->getFullyQualifiedCallable( $callable );
+		return $this->app->getSlim()->group($pattern, $callable);
+    }
 	
 } // class 
 
