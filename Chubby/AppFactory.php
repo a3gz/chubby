@@ -10,21 +10,21 @@ namespace Chubby;
 
 final class AppFactory
 {
-	/**
-	 * Returns an application object specialized for the type of incoming request. 
-	 * Chubby is capable of responding to HTTP requests as well as command line requests via the same
-	 * index.php file. 
-	 */
-	public static function getApp()
-	{
-		/**
-		 * Application singleton
-		 */
-		static $app = null; 
+    /**
+     * Returns an application object specialized for the type of incoming request. 
+     * Chubby is capable of responding to HTTP requests as well as command line requests via the same
+     * index.php file. 
+     */
+    public static function getApp()
+    {
+        /**
+         * Application singleton
+         */
+        static $app = null; 
 
-		/**
-		 * Build the application if it hasn't been built yet
-		 */
+        /**
+         * Build the application if it hasn't been built yet
+         */
         if ( $app == null )
         {
             global $argv;
@@ -39,8 +39,9 @@ final class AppFactory
             }
         }
 
-		return $app;
-	} // getApp()
-	
+        return $app;
+    } // getApp()
+
 } // class 
+
 // EOF
