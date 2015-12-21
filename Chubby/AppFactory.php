@@ -20,14 +20,14 @@ final class AppFactory
 		/**
 		 * Application singleton
 		 */
-        static $app = null; 
-        
+		static $app = null; 
+
 		/**
 		 * Build the application if it hasn't been built yet
 		 */
         if ( $app == null )
         {
-			global $argv;
+            global $argv;
 
             if ( isset($argv) && count($argv) && (basename($argv[0]) == 'index.php') ) // This is a command line request
             { 
@@ -37,11 +37,9 @@ final class AppFactory
             {
                 $app = new \Chubby\ChubbyApp();
             }
-			
-			// $app->loader = $loader;
         }
-		
-        return $app;
+
+		return $app;
 	} // getApp()
 	
 } // class 
