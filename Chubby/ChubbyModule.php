@@ -41,7 +41,7 @@ abstract class ChubbyModule
 		$className = dirname( str_replace( '\\', DIRECTORY_SEPARATOR, $r->getName() ) );
 		$className = str_replace( DIRECTORY_SEPARATOR, '\\', $className );
 		
-		$path = "{$className}\\Controllers\\{$callable}";
+		$path = "{$className}\\{$callable}";
 		
 		return $path;
 	} // getFullyQualifiedCallable()
