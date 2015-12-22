@@ -16,15 +16,17 @@ A minimal application's tree structure would look something like this:
                     MainModule.php
                     Controllers
                     Models
-                    Views
-                    Assets
+                    Themes
+                        Assets
+                        Views
                     ...
                 Blog
                     BlogModule.php
                     Controllers
                     Models
-                    Views
-                    Assets
+                    Themes
+                        Assets
+                        Views
                     ...
   
 The module `Main` is a required special module. It is in this module where the instance of Slim is created and initialized. 
