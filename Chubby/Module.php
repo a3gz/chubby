@@ -8,13 +8,13 @@
  */
 namespace Chubby;
 
-abstract class ChubbyModule
+abstract class Module
 {
     const MAIN_MODULE_NAME = 'MainModule';
 
     /**
      * $app 
-     * @var \Chubby\ChubbyApp
+     * @var \Chubby\App
      */
     protected $app = null;
 
@@ -90,7 +90,7 @@ abstract class ChubbyModule
     /**
      * Makes the chubby application available to the module
      */
-    public function setApp( \Chubby\ChubbyApp $app )
+    public function setApp( \Chubby\App $app )
     {
         $this->app = $app;
         return $this;

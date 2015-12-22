@@ -35,7 +35,7 @@ final class AppFactory
             }
             else // This is an HTTP request
             {
-                $app = new \Chubby\ChubbyApp();
+                $app = new \Chubby\App();
             }
         }
 

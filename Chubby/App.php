@@ -8,7 +8,7 @@
  */
 namespace Chubby;
 
-final class ChubbyApp
+final class App
 {
     const DEFAULT_NAMESPACE = 'MyChubbyApp';
 
