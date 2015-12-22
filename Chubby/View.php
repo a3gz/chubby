@@ -143,7 +143,7 @@ class View
 
             if ( !is_readable( $fullPath ) )
             {
-                if ( !moduleName != 'Main' )
+                if ( !$moduleName != 'Main' )
                 {
                     $fullPath = APP_PATH . DS . 'Modules' . DS . 'Main' . DS . 'Views' . DS . $path . '.php';
                 }
