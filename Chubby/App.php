@@ -83,13 +83,23 @@ final class App
          */
         $this->appNamespace = $appNamespace;
 
-        $this->modules = \Chubby\ModuleLoader::load();
-
+        
+        $container = new \Slim\Container();
+        
+        $this->modules = \Chubby\ModuleLoader::load( $container );
+        
         if ( !is_array($this->modules) || !count($this->modules) )
         {
             throw new \Exception( "Chubby Framework requires at least one module." );
         }
 
+        /**
+         * After loading all the modules, the container has everything (if anything) the modules 
+         * wanted to inject, so we can create the slim instance now
+         */
+        $this->slim = new \Slim\App( $container );
+
+        
         /**
          * Initialize the modules following the order given by each module's priority.
          */
@@ -98,27 +108,6 @@ final class App
             foreach( $modules as $module )
             {
                 $module->setApp( $this );
-
-                /**
-                * The MainModule must create the Slim\App instance. 
-                * Why not create it here? Because the programmer should be able to pass in containers or settings as 
-                * they would do in a plain Slim application.
-                */
-                if ( $module->isMain() )
-                {
-                    if ( !method_exists( $module, 'newSlim' ) )
-                    {
-                        throw new \Exception( "{$module->getName()} MUST implement the newSlim() method and return an instance of Slim\App." );
-                    }
-
-                    $slim = $module->newSlim();
-                    if ( !$this->isValidSlimApp( $slim ) )
-                    {
-                        throw new \Exception( "MainModule::newSlim() MUST return an instance of Slim\App" );
-                    }
-
-                    $this->slim = $slim;
-                }
 
                 $module->init();
             }

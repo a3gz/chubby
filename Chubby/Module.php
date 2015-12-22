@@ -17,34 +17,13 @@ abstract class Module
      * @var \Chubby\App
      */
     protected $app = null;
-
+    
 
     /**
      * $priority 
      * @var integer The module's priority used as a sort index before initialization.
      */
     protected $priority = 100; 
-
-
-    /**
-     *
-     */
-    protected function getFullyQualifiedCallable( $callable )
-    {
-        $r = new \ReflectionClass( $this );
-
-        /**
-         * First we find out the path to the module from which this is being invoked.
-         * Then, we complete the path assuming that the callable is a controller located 
-         * under ModuleName\Controllers\
-         */
-        $className = dirname( str_replace( '\\', DIRECTORY_SEPARATOR, $r->getName() ) );
-        $className = str_replace( DIRECTORY_SEPARATOR, '\\', $className );
-
-        $path = "{$className}\\{$callable}";
-
-        return $path;
-    } // getFullyQualifiedCallable()
 
 
     /**
@@ -77,6 +56,12 @@ abstract class Module
         return $priority;
     } // getPriority()
 
+    
+    /**
+     * Module initialization. It must be implemented by sub-modules.
+     */
+    public abstract function init();
+    
 
     /**
      * Determines if the current module is the required main module
@@ -88,6 +73,27 @@ abstract class Module
 
 
     /**
+     *
+     */
+    protected function resolveCallable( $callable )
+    {
+        $r = new \ReflectionClass( $this );
+
+        /**
+         * First we find out the path to the module from which this is being invoked.
+         * Then, we complete the path assuming that the callable is a controller located 
+         * under ModuleName\Controllers\
+         */
+        $className = dirname( str_replace( '\\', DIRECTORY_SEPARATOR, $r->getName() ) );
+        $className = str_replace( DIRECTORY_SEPARATOR, '\\', $className );
+
+        $path = "{$className}\\{$callable}";
+
+        return $path;
+    } // resolveCallable()
+
+
+    /**
      * Makes the chubby application available to the module
      */
     public function setApp( \Chubby\App $app )
@@ -95,6 +101,20 @@ abstract class Module
         $this->app = $app;
         return $this;
     } // setApp()
+    
+    
+    /**
+     * Placeholder method.
+     * Modules that want to inject dependency to the Slim application can use this method to
+     * modify the container that will utlimately be passed to Slim upon construction.
+     *
+     * @param \Slim\Container $container 
+     */
+    public function onLoad( \Slim\Container $container )
+    {
+        // placeholder
+    } // onLoad()
+    
 
 
     /********************************************************************************
@@ -126,9 +146,10 @@ abstract class Module
      */
     public function get($pattern, $callable)
     {
-        $callable = $this->getFullyQualifiedCallable( $callable );
+        $callable = $this->resolveCallable( $callable );
         return $this->app->getSlim()->get($pattern, $callable);
     }
+    
 
     /**
      * Add POST route
@@ -140,10 +161,11 @@ abstract class Module
      */
     public function post($pattern, $callable)
     {
-        $callable = $this->getFullyQualifiedCallable( $callable );
+        $callable = $this->resolveCallable( $callable );
         return $this->app->getSlim()->post($pattern, $callable);
     }
 
+    
     /**
      * Add PUT route
      *
@@ -154,10 +176,11 @@ abstract class Module
      */
     public function put($pattern, $callable)
     {
-        $callable = $this->getFullyQualifiedCallable( $callable );
+        $callable = $this->resolveCallable( $callable );
         return $this->app->getSlim()->put($pattern, $callable);
     }
 
+    
     /**
      * Add PATCH route
      *
@@ -168,10 +191,11 @@ abstract class Module
      */
     public function patch($pattern, $callable)
     {
-        $callable = $this->getFullyQualifiedCallable( $callable );
+        $callable = $this->resolveCallable( $callable );
         return $this->app->getSlim()->patch($pattern, $callable);
     }
 
+    
     /**
      * Add DELETE route
      *
@@ -182,10 +206,11 @@ abstract class Module
      */
     public function delete($pattern, $callable)
     {
-        $callable = $this->getFullyQualifiedCallable( $callable );
+        $callable = $this->resolveCallable( $callable );
         return $this->app->getSlim()->delete($pattern, $callable);
     }
 
+    
     /**
      * Add OPTIONS route
      *
@@ -196,10 +221,11 @@ abstract class Module
      */
     public function options($pattern, $callable)
     {
-        $callable = $this->getFullyQualifiedCallable( $callable );
+        $callable = $this->resolveCallable( $callable );
         return $this->app->getSlim()->options($pattern, $callable);
     }
 
+    
     /**
      * Add route for any HTTP method
      *
@@ -210,7 +236,7 @@ abstract class Module
      */
     public function any($pattern, $callable)
     {
-        $callable = $this->getFullyQualifiedCallable( $callable );
+        $callable = $this->resolveCallable( $callable );
         return $this->app->getSlim()->any($pattern, $callable);
     }
 
@@ -229,7 +255,7 @@ abstract class Module
      */
     public function group($pattern, $callable)
     {
-        $callable = $this->getFullyQualifiedCallable( $callable );
+        $callable = $this->resolveCallable( $callable );
         return $this->app->getSlim()->group($pattern, $callable);
     }
 

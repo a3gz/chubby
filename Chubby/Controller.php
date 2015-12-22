@@ -28,6 +28,15 @@ abstract class Controller
     
     
     /**
+     * @return \Slim\App The instance of Slim stored in the singleton Chubby\App object.
+     */
+    public function getSlim()
+    {
+        return \Chubby\AppFactory::getApp()->getSlim();
+    } // getSlim()
+    
+    
+    /**
      *
      */
     protected function findView( $subPath )

@@ -14,7 +14,7 @@ final class ModuleLoader
     /**
      *
      */
-    public static function load()
+    public static function load( \Slim\Container $container )
     {
         $path = APP_PATH . DS . 'Modules';
 
@@ -44,6 +44,14 @@ final class ModuleLoader
             $module = new $fullClassName();
             $priority = $module->getPriority();
             if ($priority < 0) $priority = 0; // Highest allowed priority
+            
+            // Only MainModule is allowed to have prioarity 0
+            if ( ( $priority == 0 ) && ($className != 'MainModule') )
+            {
+                $priority = 1;
+            }
+            
+            $module->onLoad( $container );
 
             $modules[$priority][$fullClassName] = $module;
         }
