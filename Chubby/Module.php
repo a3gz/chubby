@@ -24,7 +24,7 @@ abstract class Module
      * @var integer The module's priority used as a sort index before initialization.
      */
     protected $priority = 100; 
-
+	
 
     /**
      * Returns the module's class name without the namespace path.
@@ -50,7 +50,7 @@ abstract class Module
 
         if ( $this->isMain() )
         {
-        $priority = 0;
+			$priority = 0;
         }
 
         return $priority;

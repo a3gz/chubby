@@ -11,6 +11,8 @@ namespace Chubby;
 final class App
 {
     const ROOT_NAMESPACE = 'ChubbyApp';
+	const WITH_PRIORITIES = true;
+	const IGNORE_PRIORITIES = false;
 
 
     /**
@@ -39,6 +41,34 @@ final class App
      */
     protected $slim = null;
 
+	
+	
+	/**
+	 * Returns the list of registered modules
+	 *
+	 * @param bool $priorities Modifier used to request the modules discriminated by priority or all together as a plain list.
+	 *
+	 * @return array List of registered modules.
+	 */
+	public function getModules( $priorities = self::IGNORE_PRIORITIES )
+	{
+		$modules = $this->modules;
+		
+		if ( $priorities == self::IGNORE_PRIORITIES ) // return a plain list
+		{
+			$modules = [];
+			foreach ( $this->modules as $priority => $priorityModules )
+			{
+				foreach( $priorityModules as $name => $module )
+				{
+					$modules[$name] = $module;
+				}
+			}
+		}
+
+		return $modules;
+	} // getModules()
+	
 
     /**
      * Returns the instance of the Slimn application
@@ -107,9 +137,9 @@ final class App
         {
             foreach( $modules as $module )
             {
-                $module->setApp( $this );
+                $module['object']->setApp( $this );
 
-                $module->init();
+                $module['object']->init();
             }
         }
 
