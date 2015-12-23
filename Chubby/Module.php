@@ -108,9 +108,9 @@ abstract class Module
      * Modules that want to inject dependency to the Slim application can use this method to
      * modify the container that will utlimately be passed to Slim upon construction.
      *
-     * @param \Slim\Container $container 
+     * @param \Interop\Container\ContainerInterface $container 
      */
-    public function onLoad( \Slim\Container $container )
+    public function onLoad( \Interop\Container\ContainerInterface $container )
     {
         // placeholder
     } // onLoad()

@@ -14,7 +14,7 @@ final class ModuleLoader
     /**
      *
      */
-    public static function load( \Slim\Container $container )
+    public static function load( \Interop\Container\ContainerInterface $container )
     {
         $path = APP_PATH . DS . 'Modules';
 

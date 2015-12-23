@@ -11,6 +11,59 @@ namespace Chubby;
 abstract class Controller
 {
     /**
+     * $container
+     *
+     * @var \Interop\Container\ContainerInterface
+     */
+    protected $container; 
+    
+    
+    /**
+     *
+     */
+    public function __construct( \Interop\Container\ContainerInterface $container = null )
+    {
+        $this->container = $container;
+    } // __construct()
+    
+    
+    /**
+     * Getter that functions as a proxy to the DI container.
+     * This provides familiarity to Slim programers by allowing them to access the container 
+     * as $this->varname
+     *
+     * @param string $key Attribute or service name 
+     *
+     * @return mixed The corresponding attribute in the application's DI container
+     */
+    public function __get( $key )
+    {
+        return $this->container[$key];
+    } // __get()
+    
+    
+    /**
+     * Setter that functions as a proxy to the DI container
+     *
+     * @param string $key Variable name
+     * @param mixed $val Value 
+     */
+    public function __set( $key, $val )
+    {
+        $this->container[$key] = $val;
+    } // __set()
+    
+    
+    /**
+     * @return \Interop\Container\ContainerInterface
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    } // getContainer()
+    
+    
+    /**
      * Returns the name of the module in which the controller is located.
      *
      * @return string The module name.
