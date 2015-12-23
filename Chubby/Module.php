@@ -113,6 +113,7 @@ abstract class Module
     public function onLoad( \Interop\Container\ContainerInterface $container )
     {
         // placeholder
+        return $this;
     } // onLoad()
     
 

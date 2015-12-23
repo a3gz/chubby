@@ -1,0 +1,14 @@
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/a3gz/chubby"
+        }
+    ],
+    "require": {
+        "a3gz/chubby": "dev-master"
+    },
+	"autoload": {
+        "psr-4": {"MyChubbyApp\\": "./"}
+    }
+}
