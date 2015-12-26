@@ -3,7 +3,14 @@ Adding some fat to [Slim Framework](https://github.com/slimphp/Slim).
 
 For more information, please check out the [wiki](https://github.com/a3gz/chubby/wiki).
 
-#Contact the author
+## Install 
+
+Via composer 
+
+    composer require a3gz/chubby 
+    
+
+## Contact the author
 
 I would welcome comments, suggestions and brainstorming-like ideas.
 
