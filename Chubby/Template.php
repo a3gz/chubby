@@ -86,7 +86,7 @@ class Template
             $dirty = false;
             $dom = null;
 
-            $dom = \Sunra\PhpSimple\HtmlDomParser::str_get_html( $buffer );
+            $dom = \SunraDomParser\HtmlDomParser::fromString( $buffer );
             
             /**
              * Inject header content whenever the tag <head>...<chubby>
@@ -210,7 +210,7 @@ class Template
      */
     private function preProcessView( $view )
     {
-        $dom = \Sunra\PhpSimple\HtmlDomParser::str_get_html( $view );
+        $dom = \SunraDomParser\HtmlDomParser::fromString( $view );
         
         
         // Search for head content 
