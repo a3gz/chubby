@@ -19,19 +19,19 @@ class Template
 
     
     /**
-     * $scripts 
+     * $styles
      *
-     * @var array List of script references.
+     * @var array Code to be injected into the page head
      */
-    protected $scripts = [];
+    protected $styles = [];
     
     
     /**
-     * $styles 
+     * $scripts
      *
-     * @var array List of stylesheet references.
+     * @var array Scripts to be injected in the DOM 
      */
-    protected $styles = [];
+    protected $scripts = [];
     
     
     /**
@@ -77,8 +77,44 @@ class Template
         {
             ob_start();
            
-            include $this->filename;
-            $buffer = ob_get_clean();
+                include $this->filename;
+                
+                $buffer = ob_get_contents();
+                
+            ob_end_clean();
+            
+            $dirty = false;
+            $dom = null;
+
+            $dom = \Sunra\PhpSimple\HtmlDomParser::str_get_html( $buffer );
+            
+            /**
+             * Inject header content whenever the tag <head>...<chubby>
+             */
+            if ( $styles = $dom->find('head chubby-styles', 0) )
+            {
+                $styles->outertext = implode($this->styles, "\n"); 
+                $dirty = true;
+            }
+            
+            
+            /**
+             * Inject body scripts whenever the <body>...<chubby> tag appears
+             */
+            if ( $scripts = $dom->find('body chubby-scripts', 0) )
+            {
+                $scripts->outertext = implode($this->scripts, "\n"); 
+                $dirty = true;
+            }
+
+            
+            /**
+             * Save changes to the DOM
+             */
+            if ( $dom && $dirty )
+            {
+                $buffer = $dom->save();
+            } 
         }
         
         return $buffer;
@@ -162,36 +198,42 @@ class Template
         }
         return $this;
     } // importView()
-
+    
     
     /**
+     * Scan views for <styles> and <scripts> tags. Strip the content of those tags and store it in 
+     * the corresponding arrays $this->styles and $this->scripts.
      *
+     * @param string $view An included and PHP processed view. 
+     *
+     * @return string The modified view, stripped from the special content. 
      */
-    public function registerScript( $src, $type = 'application/javascript' )
+    private function preProcessView( $view )
     {
-        $this->scripts[$src] = [
-            'src' => $href,
-            'type' => $type
-        ];
+        $dom = \Sunra\PhpSimple\HtmlDomParser::str_get_html( $view );
         
-        return $this;
-    } // registerScript()
+        
+        // Search for head content 
+		$nodes = $dom->find("styles");
+        foreach( $nodes as $node )
+        {
+            $this->styles[] = $node->innertext();
+            $node->outertext = '';
+        }
 
-    
-    /**
-     *
-     */
-    public function registerStyle( $href, $media = 'screen', $type = 'text/css' )
-    {
-        $this->styles[$href] = [
-            'href' => $href,
-            'media' => $media,
-            'type' => $type
-        ];
-        
-        return $this;
-    } // registerStyle()
-    
+        // Search for pre body-end content 
+		$nodes = $dom->find("scripts");
+        foreach( $nodes as $node )
+        {
+            $this->scripts[] = $node->innertext();
+            $node->outertext = '';
+        }
+
+        $view = $dom->save();
+
+        return $view;
+    } // preProcessView()
+
     
     /**
      * Renders a previously imported view.
@@ -202,9 +244,13 @@ class Template
     {
         if ( isset($this->views[$viewIndex]) )
         {
-            include $this->views[$viewIndex];
+            ob_start();
+                include $this->views[$viewIndex];
+                $view = ob_get_contents();
+                $view = $this->preProcessView( $view );
+            ob_end_clean();
+            echo $view;
         }
-        return $this;
     } // render()
     
     
@@ -234,15 +280,6 @@ class Template
 		return $this;
     } // setTheme()
     
-    
-    /**
-     * A wrapper for the magic method __toString() in case we are unfomfortable printing a class as a string.
-     */
-    public function toString()
-    {
-        return $this->__toString();
-    } // toString()
-
     
     /**
      * Setup the template file to use. 
