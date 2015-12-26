@@ -7,7 +7,7 @@ For more information, please check out the [wiki](https://github.com/a3gz/chubby
 
 Via composer 
 
-    composer require a3gz/chubby 
+    require a3gz/chubby 
     
 
 ## Contact the author
