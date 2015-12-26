@@ -9,14 +9,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="icon" type="image/png" href="favicon.png" />
 
+        <chubby-styles> 
     </head>
 
     <body>
         <?php $this->render('header'); ?>
-
+        
         <?php $this->render('content'); ?>
         
         <?php $this->render('footer'); ?>        
+        
+        <chubby-scripts>
     </body>
-
 </html>
