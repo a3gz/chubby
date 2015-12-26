@@ -93,7 +93,7 @@ class Template
              */
             if ( $styles = $dom->find('head chubby-styles', 0) )
             {
-                $styles->outertext = implode($this->styles, "\n"); 
+                $styles->outerText = implode($this->styles, "\n"); 
                 $dirty = true;
             }
             
@@ -103,7 +103,7 @@ class Template
              */
             if ( $scripts = $dom->find('body chubby-scripts', 0) )
             {
-                $scripts->outertext = implode($this->scripts, "\n"); 
+                $scripts->outerText = implode($this->scripts, "\n"); 
                 $dirty = true;
             }
 
@@ -218,7 +218,7 @@ class Template
         foreach( $nodes as $node )
         {
             $this->styles[] = $node->innertext();
-            $node->outertext = '';
+            $node->outerText = '';
         }
 
         // Search for pre body-end content 
@@ -226,7 +226,7 @@ class Template
         foreach( $nodes as $node )
         {
             $this->scripts[] = $node->innertext();
-            $node->outertext = '';
+            $node->outerText = '';
         }
 
         $view = $dom->save();
