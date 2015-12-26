@@ -35,6 +35,17 @@ class Template
     
     
     /**
+     * $placeholders 
+     *
+     * @var array Pre-defined custom placeholders 
+     */
+    protected $placeholders = [
+        'chubby-scripts' => [],
+        'chubby-styles' => []
+    ];
+    
+    
+    /**
      * $theme 
      *
      * @var \Chubby\Interfaces\ThemeInterface The theme to use when rendering.
@@ -84,33 +95,27 @@ class Template
             ob_end_clean();
             
             $dirty = false;
-            $dom = null;
 
             $dom = \SunraDomParser\HtmlDomParser::fromString( $buffer );
             
-            /**
-             * Inject header content whenever the tag <head>...<chubby>
-             */
-            if ( $styles = $dom->find('head chubby-styles', 0) )
-            {
-                $styles->outerText = implode($this->styles, "\n"); 
-                $dirty = true;
-            }
             
-            
-            /**
-             * Inject body scripts whenever the <body>...<chubby> tag appears
-             */
-            if ( $scripts = $dom->find('body chubby-scripts', 0) )
+            // Inject custom placeholders content into the final page.
+            foreach( $this->placeholders as $placeholder => $content )
             {
-                $scripts->outerText = implode($this->scripts, "\n"); 
-                $dirty = true;
+                if ( $domNode = $dom->find($placeholder, 0) )
+                {
+                    $outerText = '';
+                    if ( count($content) )
+                    {
+                        $outerText = implode($content, "\n"); 
+                    }
+                        
+                    $domNode->outerText = $outerText;
+                    $dirty = true;
+                }
             }
 
-            
-            /**
-             * Save changes to the DOM
-             */
+            // Save changes to the DOM
             if ( $dom && $dirty )
             {
                 $buffer = $dom->save();
@@ -201,8 +206,7 @@ class Template
     
     
     /**
-     * Scan views for <styles> and <scripts> tags. Strip the content of those tags and store it in 
-     * the corresponding arrays $this->styles and $this->scripts.
+     * Scan views for placeholders, save the content and remove the placeholders from the view.
      *
      * @param string $view An included and PHP processed view. 
      *
@@ -212,27 +216,39 @@ class Template
     {
         $dom = \SunraDomParser\HtmlDomParser::fromString( $view );
         
+        foreach( $this->placeholders as $placeholder => $content )
+        {
+            // Search for head content 
+            $nodes = $dom->find( $placeholder );
+            foreach( $nodes as $node )
+            {
+                $this->placeholders[$placeholder][] = $node->innerText();
+                $node->outerText = '';
+            }
+        }
         
-        // Search for head content 
-		$nodes = $dom->find("styles");
-        foreach( $nodes as $node )
-        {
-            $this->styles[] = $node->innertext();
-            $node->outerText = '';
-        }
-
-        // Search for pre body-end content 
-		$nodes = $dom->find("scripts");
-        foreach( $nodes as $node )
-        {
-            $this->scripts[] = $node->innertext();
-            $node->outerText = '';
-        }
-
         $view = $dom->save();
 
         return $view;
     } // preProcessView()
+    
+    
+    /**
+     * Registers a new custom placeholder. 
+     *
+     * @param string $placeholder The custom placeholder to register.
+     *
+     * @return Chubby\Template Self
+     */
+    public function registerPlaceholder( $placeholder )
+    {
+        if ( !isset($this->placeholders[$placeholder]) )
+        {
+            $this->placeholders[$placeholder] = [];
+        }
+        
+        return $this;
+    } // registerPlaceholder()
 
     
     /**
