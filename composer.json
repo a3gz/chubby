@@ -13,9 +13,7 @@
 		}
 	],
     "require": {
-        "slim/slim": "^3.0",
-		"a3gz/chubby-assets": "dev-master",
-		"a3gz/sunra-dom-parser": "dev-master"
+        "slim/slim": "^3.0"
     },
     "autoload": {
         "psr-4": {
