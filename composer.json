@@ -13,11 +13,13 @@
 		}
 	],
     "require": {
-        "slim/slim": "^3.0"
+        "slim/slim": "^3.0",
+		"a3gz/chubby-assets": "dev-master",
+		"a3gz/sunra-dom-parser": "dev-master"
     },
     "autoload": {
         "psr-4": {
-            "Chubby\\": "Chubby"
+            "Chubby\\": "src"
         }
     }
 }
