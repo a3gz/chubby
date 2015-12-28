@@ -25,15 +25,15 @@ final class ModuleLoader
 			$mark = "Chubby\\Modules\\";
 			if ( strpos( $namespace, $mark ) === 0 )
 			{
-				$pathForm = str_replace( '\\', DIRECTORY_SEPARATOR, $namespace );
+				$namespace = str_replace( '\\', DIRECTORY_SEPARATOR, $namespace );
 				$namespace = str_replace( DIRECTORY_SEPARATOR, '\\', dirname($namespace) );
 				$sources[] = [
 					'namespace' => $namespace,
-					'path' => str_replace( '/', DIRECTORY_SEPARATOR, dirname( $path ) )
+					'path' => str_replace( '/', DIRECTORY_SEPARATOR, dirname($path) )
 				];
 			}
 		}
-		
+
 		return $sources;
 	} // findPackageModules()
 	
@@ -58,22 +58,24 @@ final class ModuleLoader
 		foreach( $sources as $source )
 		{
 			$path = $source['path'];
-			
+
 			foreach (new \DirectoryIterator($path) as $fileInfo)
 			{
 				if ($fileInfo->isDot() || $fileInfo->isFile()) continue;
 
-				$moduleName = $fileInfo->getBasename();
-				$className = "{$moduleName}Module";
+                $moduleName = $fileInfo->getBasename();
+                $className = "{$moduleName}Module";
 
 				if ( isset($source['namespace']) )
 				{
-					$fullClassName = "\\{$source['namespace']}\\{$moduleName}\\{$className}";
+					$fullClassName = "\\{$source['namespace']}";
 				}
 				else 
 				{
-					$fullClassName = \Chubby\AppFactory::getApp()->appNamespace() . "\\Modules\\{$fileInfo->getBasename()}\\{$className}";
+					$fullClassName = \Chubby\AppFactory::getApp()->appNamespace() . "\\Modules";
 				}
+                
+                $fullClassName .= "\\{$moduleName}\\{$className}";
 
 				$moduleObject = new $fullClassName();
 
