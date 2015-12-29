@@ -8,7 +8,7 @@
  */
 namespace Chubby;
 
-abstract class Controller
+abstract class AbstractController
 {
     /**
      * $container

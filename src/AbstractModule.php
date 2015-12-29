@@ -8,7 +8,7 @@
  */
 namespace Chubby;
 
-abstract class Module
+abstract class AbstractModule
 {
     const MAIN_MODULE_NAME = 'MainModule';
 
