@@ -72,7 +72,7 @@ final class ModuleLoader
 				}
 				else 
 				{
-					$fullClassName = \Chubby\AppFactory::getApp()->appNamespace() . "\\Modules";
+					$fullClassName = \Chubby\AppFactory::getApp()->appNamespace . "\\Modules";
 				}
                 
                 $fullClassName .= "\\{$moduleName}\\{$className}";

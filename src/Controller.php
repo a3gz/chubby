@@ -15,7 +15,7 @@ abstract class Controller
      *
      * @var \Interop\Container\ContainerInterface
      */
-    protected $container; 
+    public $container; 
     
     
     /**
@@ -52,15 +52,6 @@ abstract class Controller
     {
         $this->container[$key] = $val;
     } // __set()
-    
-    
-    /**
-     * @return \Interop\Container\ContainerInterface
-     */
-    public function getContainer()
-    {
-        return $this->container;
-    } // getContainer()
     
     
     /**

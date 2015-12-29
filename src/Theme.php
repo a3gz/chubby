@@ -8,14 +8,14 @@
  */
 namespace Chubby;
 
-class Theme implements Interfaces\ThemeInterface
+class Theme
 {
     /**
      * $name 
      *
      * @var string The theme name. 
      */
-    protected $name = 'Default';
+    public $name = 'Default';
      
      
     /**
@@ -36,24 +36,7 @@ class Theme implements Interfaces\ThemeInterface
 	{
 		return $this->name;
 	} // __toString()
-    
-    
-    /**
-     *
-     */
-    public function getName()
-    {
-        return $this->name;
-    } // getName()
-	
-	
-	/**
-	 *
-	 */
-	public function setName( $name )
-	{
-		$this->name = $name;
-	} // setName()
+
 } // class 
 
 // EOF 

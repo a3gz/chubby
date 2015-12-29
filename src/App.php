@@ -19,9 +19,7 @@ final class App
      * $appNamespace 
      * @var string
      */
-    public function appNamespace() {
-        return $this->appNamespace;
-    } protected $appNamespace; 
+    public $appNamespace; 
 
     /**
      * Instance of Composer's autoloader

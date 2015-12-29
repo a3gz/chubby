@@ -286,11 +286,13 @@ class Template
 
 
     /**
+     * Sets the theme object. We use a setter to make sure the property gets the right type of value.
+     *
      * @param Chubby\Interfaces\ThemeInterface $theme A theme.
 	 *
 	 * @return Chubby\Template Self
      */
-    public function setTheme( \Chubby\Interfaces\ThemeInterface $theme )
+    public function setTheme( \Chubby\Theme $theme )
     {
         $this->theme = $theme;
 		return $this;
@@ -319,7 +321,7 @@ class Template
         
         $this->filename = ''; // Reset to override any previously used template
         
-        $fullPath = APP_PATH . DS . 'Templates' . DS . $this->getTheme()->getName() . DS . $templateFilename;
+        $fullPath = APP_PATH . DS . 'Templates' . DS . $this->getTheme()->name . DS . $templateFilename;
         if ( !is_readable( $fullPath ) )
         {
             $fullPath = APP_PATH . DS . 'Templates' . DS . 'Default' . DS . $templateFilename;
@@ -335,7 +337,9 @@ class Template
     
     
     /**
+     * @param string $themeName The theme name to use. 
      *
+     * @return Chubby\Template Self
      */
     public function wear( $themeName )
     {
