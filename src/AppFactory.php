@@ -4,7 +4,7 @@
  *
  * @link      https://github.com/a3gz/Chubby
  * @copyright Copyright (c) Alejandro Arbiza
- * @license   http://www.roetal.com/chubby-framework/license (MIT License)
+ * @license   http://www.roetal.com/license/mit (MIT License)
  */
 namespace Chubby;
 
