@@ -16,18 +16,15 @@ final class ModuleLoader
 	 */
 	private static function findPackageModules()
 	{
-		$map = require APP_PATH . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'composer' . DIRECTORY_SEPARATOR . 'autoload_psr4.php';
+		$map = require VENDOR_PATH . DIRECTORY_SEPARATOR . 'composer' . DIRECTORY_SEPARATOR . 'autoload_psr4.php';
 
 		$sources = [];
-		foreach( $map as $namespace => $path )
-		{
+		foreach( $map as $namespace => $path ) {
 			$path = array_shift($path);
 			$mark = "Chubby\\Modules\\";
-			if ( strpos( $namespace, $mark ) === 0 )
-			{
+			if ( strpos( $namespace, $mark ) === 0 ) {
                 // Remove ending back-slash 
-                if ( substr( $namespace, -1 ) == '\\' )
-                {
+                if ( substr( $namespace, -1 ) == '\\' ) {
                     $namespace = substr( $namespace, 0, -1 );
                 }
                 // Register the source 
@@ -59,23 +56,20 @@ final class ModuleLoader
 
         $modules = [];
 
-		foreach( $sources as $source )
-		{
+		foreach( $sources as $source ) {
 			$path = $source['path'];
 
-			foreach (new \DirectoryIterator($path) as $fileInfo)
-			{
-				if ($fileInfo->isDot() || $fileInfo->isFile()) continue;
+			foreach (new \DirectoryIterator($path) as $fileInfo) {
+				if ($fileInfo->isDot() || $fileInfo->isFile()) {
+                    continue;
+                }
 
                 $moduleName = $fileInfo->getBasename();
                 $className = "{$moduleName}Module";
 
-				if ( isset($source['namespace']) )
-				{
+				if ( isset($source['namespace']) ) {
 					$fullClassName = "\\{$source['namespace']}";
-				}
-				else 
-				{
+				} else {
 					$fullClassName = \Chubby\AppFactory::getApp()->appNamespace . "\\Modules";
 				}
                 
@@ -84,8 +78,7 @@ final class ModuleLoader
 				$moduleObject = new $fullClassName();
 
 				$required = 'Chubby\AbstractModule';
-				if ( !($moduleObject instanceof \Chubby\AbstractModule ) )
-				{
+				if ( !($moduleObject instanceof \Chubby\AbstractModule ) ) {
 					throw new \Exception( "Module class {$fullClassName} MUST extend {$required}." );
 				}
 
@@ -94,8 +87,7 @@ final class ModuleLoader
 				if ($priority < 0) $priority = 0; // Highest allowed priority
 				
 				// Only MainModule is allowed to have prioarity 0
-				if ( ( $priority == 0 ) && ($className != 'MainModule') )
-				{
+				if ( ( $priority == 0 ) && ($className != 'MainModule') ) {
 					$priority = 1;
 				}
 				

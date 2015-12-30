@@ -48,8 +48,7 @@ abstract class AbstractModule
     {
         $priority = $this->priority;
 
-        if ( $this->isMain() )
-        {
+        if ( $this->isMain() ) {
 			$priority = 0;
         }
 

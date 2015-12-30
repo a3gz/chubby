@@ -72,8 +72,7 @@ class Template
      */
     public function __get( $key )
     {
-        if ( isset($this->data[$key] ) )
-        {
+        if ( isset($this->data[$key] ) ) {
             return $this->data[$key];
         }
     } // __get()
@@ -84,8 +83,7 @@ class Template
      */
     public function __toString()
     {
-        if ( is_readable( $this->filename ) )
-        {
+        if ( is_readable( $this->filename ) ) {
             ob_start();
            
                 include $this->filename;
@@ -100,13 +98,10 @@ class Template
             
             
             // Inject custom placeholders content into the final page.
-            foreach( $this->placeholders as $placeholder => $content )
-            {
-                if ( $domNode = $dom->find($placeholder, 0) )
-                {
+            foreach( $this->placeholders as $placeholder => $content ) {
+                if ( $domNode = $dom->find($placeholder, 0) ) {
                     $outerText = '';
-                    if ( count($content) )
-                    {
+                    if ( count($content) ) {
                         $outerText = implode($content, "\n"); 
                     }
                         
@@ -116,8 +111,7 @@ class Template
             }
 
             // Save changes to the DOM
-            if ( $dom && $dirty )
-            {
+            if ( $dom && $dirty ) {
                 $buffer = $dom->save();
             } 
         }
@@ -136,8 +130,7 @@ class Template
      */
     public function getTheme()
     {
-		if ( $this->theme == null )
-		{
+		if ( $this->theme == null ) {
 			$this->theme = new \Chubby\Theme('Default');
 		}
         return $this->theme;
@@ -150,21 +143,18 @@ class Template
      */
     public function importView( $views )
     {
-        if ( !is_array($views) )
-        {
+        if ( !is_array($views) ) {
             $views = [$views];
         }
         
-        foreach( $views as $view )
-        {
-            if ( !is_string($view) )
-            {
+        foreach( $views as $view ) {
+            
+            if ( !is_string($view) ) {
                 throw new \Exception( get_class($this) . "::importView() expects a string or an array of strings" );
             }
             
             $parts = [];
-            if ( !preg_match( "#^([^\:\\\/]+):([^\:]+)$#", $view, $parts ) )
-            {
+            if ( !preg_match( "#^([^\:\\\/]+):([^\:]+)$#", $view, $parts ) ) {
                 throw new \Exception( "Invalid template reference: {$view}" );
             }
             
@@ -172,29 +162,24 @@ class Template
             $view = $parts[2];
             
             $index = $path = '';
-            if (preg_match("/[\/a-zA-Z0-9]+[ ]+as[ ]+[a-zA-Z0-9]+/i", $view))
-            {
+            
+            if (preg_match("/[\/a-zA-Z0-9]+[ ]+as[ ]+[a-zA-Z0-9]+/i", $view)) {
                 $parts = explode(' as ', $view);
                 $path = trim($parts[0]);
                 $index = trim($parts[1]);
-            }
-            else
-            {
+            } else {
                 $index = basename($view);
                 $path = $view;
             }    
 
             $fullPath = APP_PATH . DS . 'Modules' . DS . $moduleName . DS . 'Themes' . DS . $this->getTheme() . DS . 'Views' . DS . $path . '.php';
 
-            if ( !is_readable( $fullPath ) )
-            {
-                if ( !$moduleName != 'Main' )
-                {
+            if ( !is_readable( $fullPath ) ) {
+                if ( !$moduleName != 'Main' ) {
                     $fullPath = APP_PATH . DS . 'Modules' . DS . $moduleName . DS . 'Themes' . DS . 'Default' . DS . 'Views' . DS . $path . '.php';
                 }
                 
-                if ( !is_readable( $fullPath ) )
-                {
+                if ( !is_readable( $fullPath ) ) {
                     throw new \Exception( "Cannot find the view: {$view}" );
                 }
             }
@@ -216,12 +201,11 @@ class Template
     {
         $dom = \SunraDomParser\HtmlDomParser::fromString( $view );
         
-        foreach( $this->placeholders as $placeholder => $content )
-        {
+        foreach( $this->placeholders as $placeholder => $content ) {
             // Search for head content 
             $nodes = $dom->find( $placeholder );
-            foreach( $nodes as $node )
-            {
+            
+            foreach( $nodes as $node ) {
                 $this->placeholders[$placeholder][] = $node->innerText();
                 $node->outerText = '';
             }
@@ -242,8 +226,7 @@ class Template
      */
     public function registerPlaceholder( $placeholder )
     {
-        if ( !isset($this->placeholders[$placeholder]) )
-        {
+        if ( !isset($this->placeholders[$placeholder]) ) {
             $this->placeholders[$placeholder] = [];
         }
         
@@ -258,8 +241,7 @@ class Template
      */
     public function render( $viewIndex )
     {
-        if ( isset($this->views[$viewIndex]) )
-        {
+        if ( isset($this->views[$viewIndex]) ) {
             ob_start();
                 include $this->views[$viewIndex];
                 $view = ob_get_contents();
@@ -276,8 +258,7 @@ class Template
      */
     public function setData( array $data )
     {
-        foreach( $data as $key => $value )
-        {
+        foreach( $data as $key => $value ) {
             $this->data[$key] = $value;
         }
         
@@ -311,8 +292,7 @@ class Template
     public function using( $ref )
     {
         $parts = [];
-        if ( !preg_match( "#^([^\:\\\/]+):([^\:]+)$#", $ref, $parts ) )
-        {
+        if ( !preg_match( "#^([^\:\\\/]+):([^\:]+)$#", $ref, $parts ) ) {
             throw new \Exception( "Invalid template reference: {$ref}" );
         }
         
@@ -322,11 +302,11 @@ class Template
         $this->filename = ''; // Reset to override any previously used template
         
         $fullPath = APP_PATH . DS . 'Templates' . DS . $this->getTheme()->name . DS . $templateFilename;
-        if ( !is_readable( $fullPath ) )
-        {
+        
+        if ( !is_readable( $fullPath ) ) {
             $fullPath = APP_PATH . DS . 'Templates' . DS . 'Default' . DS . $templateFilename;
-            if ( !is_readable( $fullPath ) )
-            {
+            
+            if ( !is_readable( $fullPath ) ) {
                 throw new \Exception( "Cannot find a template from the given reference: {$ref}" );
             }
         }

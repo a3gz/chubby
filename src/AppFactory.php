@@ -29,12 +29,11 @@ final class AppFactory
         {
             global $argv;
 
-            if ( isset($argv) && count($argv) && (basename($argv[0]) == 'index.php') ) // This is a command line request
-            { 
+            if ( isset($argv) && count($argv) && (basename($argv[0]) == 'index.php') ) { 
+                // This is a command line request             
                 // to-do: console app
-            }
-            else // This is an HTTP request
-            {
+            } else  {
+                // This is an HTTP request                
                 $app = new \Chubby\App();
             }
         }

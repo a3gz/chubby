@@ -2,7 +2,7 @@
     "name": "a3gz/chubby",
     "type": "library",
     "description": "Chubby is a PHP framework built around Slim that propose one way to organize code.",
-    "keywords": ["chubby", "slim", "framework", "php"],
+    "keywords": ["php", "framework", "chubby", "slim"],
     "homepage": "https://github.com/a3gz/chubby",
     "license": "MIT",
 	"authors": [

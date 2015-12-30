@@ -52,13 +52,10 @@ final class App
 	{
 		$modules = $this->modules;
 		
-		if ( $priorities == self::IGNORE_PRIORITIES ) // return a plain list
-		{
+		if ( $priorities == self::IGNORE_PRIORITIES ) // return a plain list {
 			$modules = [];
-			foreach ( $this->modules as $priority => $priorityModules )
-			{
-				foreach( $priorityModules as $name => $module )
-				{
+			foreach ( $this->modules as $priority => $priorityModules ) {
+				foreach( $priorityModules as $name => $module ) {
 					$modules[$name] = $module;
 				}
 			}
@@ -73,8 +70,7 @@ final class App
      */
     public function getSlim()
     {
-        if ( !$this->isValidSlimApp( $this->slim ) )
-        {
+        if ( !$this->isValidSlimApp( $this->slim ) ) {
             throw new \Exception( "The Slim application has not been properly created. Check your MainModule::newSlim()." );
         }
         return $this->slim;
@@ -116,8 +112,7 @@ final class App
         
         $this->modules = \Chubby\ModuleLoader::load( $container );
         
-        if ( !is_array($this->modules) || !count($this->modules) )
-        {
+        if ( !is_array($this->modules) || !count($this->modules) ) {
             throw new \Exception( "Chubby Framework requires at least one module." );
         }
 
@@ -131,10 +126,8 @@ final class App
         /**
          * Initialize the modules following the order given by each module's priority.
          */
-        foreach( $this->modules as $priority => $modules )
-        {
-            foreach( $modules as $module )
-            {
+        foreach( $this->modules as $priority => $modules ) {
+            foreach( $modules as $module ) {
                 $module['object']->setApp( $this );
 
                 $module['object']->init();
