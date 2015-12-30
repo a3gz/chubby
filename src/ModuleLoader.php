@@ -25,11 +25,15 @@ final class ModuleLoader
 			$mark = "Chubby\\Modules\\";
 			if ( strpos( $namespace, $mark ) === 0 )
 			{
-				$namespace = str_replace( '\\', DIRECTORY_SEPARATOR, $namespace );
-				$namespace = str_replace( DIRECTORY_SEPARATOR, '\\', dirname($namespace) );
+                // Remove ending back-slash 
+                if ( substr( $namespace, -1 ) == '\\' )
+                {
+                    $namespace = substr( $namespace, 0, -1 );
+                }
+                // Register the source 
 				$sources[] = [
 					'namespace' => $namespace,
-					'path' => str_replace( '/', DIRECTORY_SEPARATOR, dirname($path) )
+					'path' => str_replace( '/', DIRECTORY_SEPARATOR, $path )
 				];
 			}
 		}
