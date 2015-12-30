@@ -52,7 +52,7 @@ final class App
 	{
 		$modules = $this->modules;
 		
-		if ( $priorities == self::IGNORE_PRIORITIES ) // return a plain list {
+		if ( $priorities == self::IGNORE_PRIORITIES ) { 
 			$modules = [];
 			foreach ( $this->modules as $priority => $priorityModules ) {
 				foreach( $priorityModules as $name => $module ) {
