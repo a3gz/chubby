@@ -28,30 +28,33 @@ abstract class AbstractController
     
     
     /**
-     * Getter that functions as a proxy to the DI container.
-     * This provides familiarity to Slim programers by allowing them to access the container 
-     * as $this->varname
-     *
-     * @param string $key Attribute or service name 
-     *
-     * @return mixed The corresponding attribute in the application's DI container
+     * See: $this->getService()
      */
     public function __get( $key )
     {
-        return $this->container[$key];
+        return $this->getService($key);
     } // __get()
+
+
+    /**
+     * See: $this->hasService()
+     */
+    public function __isset( $key )
+    {
+        return $this->hasService( $key );
+    } // __isset()
     
     
     /**
-     * Setter that functions as a proxy to the DI container
      *
-     * @param string $key Variable name
-     * @param mixed $val Value 
      */
-    public function __set( $key, $val )
+    protected function findView( $subPath )
     {
-        $this->container[$key] = $val;
-    } // __set()
+        $themeName = 'default';
+        
+        $fullPath = APP_PATH . DS . 'Modules' . DS . $this->getModuleName() . DS . 'Views' . DS . $themeName . DS . $subPath . '.php';
+        
+    } // findView()    
     
     
     /**
@@ -72,11 +75,17 @@ abstract class AbstractController
     
     
     /**
+     * Getter that functions as a proxy to the DI container.
+     * This provides familiarity to Slim programers by allowing them to access the container 
+     * as $this->varname
      *
+     * @param string $key Attribute or service name 
+     *
+     * @return mixed The corresponding attribute in the application's DI container
      */
     public function getService( $key )
     {
-        return $this->container[$key];
+        return $this->container->get($key);
     } // getService()
     
     
@@ -90,15 +99,14 @@ abstract class AbstractController
     
     
     /**
+     * @param string $key Attribute or service name 
      *
+     * @return bool 
      */
-    protected function findView( $subPath )
+    public function hasService( $key )
     {
-        $themeName = 'default';
-        
-        $fullPath = APP_PATH . DS . 'Modules' . DS . $this->getModuleName() . DS . 'Views' . DS . $themeName . DS . $subPath . '.php';
-        
-    } // findView()
+        return $this->container->has($key);
+    } // hasService()    
 } // class 
 
 // EOF
