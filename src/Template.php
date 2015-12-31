@@ -79,48 +79,6 @@ class Template
  
 
     /**
-     * When treated as a string a template object will return the result of including the referred file.
-     */
-    public function __toString()
-    {
-        if ( is_readable( $this->filename ) ) {
-            ob_start();
-           
-                include $this->filename;
-                
-                $buffer = ob_get_contents();
-                
-            ob_end_clean();
-            
-            $dirty = false;
-
-            $dom = \SunraDomParser\HtmlDomParser::fromString( $buffer );
-            
-            
-            // Inject custom placeholders content into the final page.
-            foreach( $this->placeholders as $placeholder => $content ) {
-                if ( $domNode = $dom->find($placeholder, 0) ) {
-                    $outerText = '';
-                    if ( count($content) ) {
-                        $outerText = implode($content, "\n"); 
-                    }
-                        
-                    $domNode->outerText = $outerText;
-                    $dirty = true;
-                }
-            }
-
-            // Save changes to the DOM
-            if ( $dom && $dirty ) {
-                $buffer = $dom->save();
-            } 
-        }
-        
-        return $buffer;
-    } // __toString()  
-
-
-    /**
      * Returns the currently used theme. 
 	 * Although it's not the template's responsibility to create the theme object, this method 
 	 * creates one if no theme has been set. The reason for this is that we know that ultimately 
@@ -280,6 +238,48 @@ class Template
     } // setTheme()
     
     
+    /**
+     * @return string Output buffer
+     */
+    public function toString()
+    {
+        if ( is_readable( $this->filename ) ) {
+            ob_start();
+           
+                include $this->filename;
+                
+                $buffer = ob_get_contents();
+                
+            ob_end_clean();
+            
+            $dirty = false;
+
+            $dom = \SunraDomParser\HtmlDomParser::fromString( $buffer );
+            
+            
+            // Inject custom placeholders content into the final page.
+            foreach( $this->placeholders as $placeholder => $content ) {
+                if ( $domNode = $dom->find($placeholder, 0) ) {
+                    $outerText = '';
+                    if ( count($content) ) {
+                        $outerText = implode($content, "\n"); 
+                    }
+                        
+                    $domNode->outerText = $outerText;
+                    $dirty = true;
+                }
+            }
+
+            // Save changes to the DOM
+            if ( $dom && $dirty ) {
+                $buffer = $dom->save();
+            } 
+        }
+        
+        return $buffer;
+    } // toString()  
+
+
     /**
      * Setup the template file to use. 
      * The first component in $ref MUST be the a colon separated pair having MODULE_NAME:TEMPLATE_NAME without file extension.
