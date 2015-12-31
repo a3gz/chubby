@@ -72,6 +72,15 @@ abstract class AbstractController
     
     
     /**
+     *
+     */
+    public function getService( $key )
+    {
+        return $this->container[$key];
+    } // getService()
+    
+    
+    /**
      * @return \Slim\App The instance of Slim stored in the singleton Chubby\App object.
      */
     public function getSlim()
