@@ -16,6 +16,12 @@ class Template
      * @var array $data Array of (key => value) pars having used in the view. 
      */
     protected $data = [];
+    
+    
+    /**
+     *
+     */
+    protected $fileName;
 
     
     /**
@@ -243,10 +249,10 @@ class Template
      */
     public function toString()
     {
-        if ( is_readable( $this->filename ) ) {
+        if ( is_readable( $this->fileName ) ) {
             ob_start();
            
-                include $this->filename;
+                include $this->fileName;
                 
                 $buffer = ob_get_contents();
                 
@@ -299,7 +305,7 @@ class Template
         $moduleName = $parts[1];
         $templateFilename = $parts[2] . '.php';
         
-        $this->filename = ''; // Reset to override any previously used template
+        $this->fileName = ''; // Reset to override any previously used template
         
         $fullPath = APP_PATH . DS . 'Templates' . DS . $this->getTheme()->name . DS . $templateFilename;
         
@@ -310,7 +316,7 @@ class Template
                 throw new \Exception( "Cannot find a template from the given reference: {$ref}" );
             }
         }
-        $this->filename = $fullPath;
+        $this->fileName = $fullPath;
         
         return $this;
     } // using()
