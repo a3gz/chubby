@@ -100,12 +100,12 @@ final class App
      * Every Chubby application is composed of one or more modules. Chubby expects that at least one module exists, otherwise it will 
      * throw an error.
      */
-    public function run()
+    public function run( $appNamespace = self::ROOT_NAMESPACE )
     {
         /**
          * Each application must exist inside its own namespace. Chubby uses that namespace to search for modules. 
          */
-        $this->appNamespace = self::ROOT_NAMESPACE;
+        $this->appNamespace = $appNamespace;
 
         
         $container = new \Slim\Container();
