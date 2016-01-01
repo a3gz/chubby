@@ -144,7 +144,22 @@ class Template
                 }
                 
                 if ( !is_readable( $fullPath ) ) {
-                    throw new \Exception( "Cannot find the view: {$view}" );
+                    
+                    // Fallback to installed package modules
+                    $packages = \Chubby\ModuleLoader::findPackageModules();
+                    
+                    foreach( $packages as $package ) {
+                        $fullPath = $package['path'] . DS . $moduleName . DS . 'Themes' . DS . 'Default' . DS . 'Views' . DS . $path . '.php';
+                        if ( is_readable( $fullPath ) ) {
+                            break;
+                        }
+                    }
+                    
+                    // We can reach this point after NOT finding the view or after breaking the $packages loop on success,
+                    // so we must ask again to know what really happened.
+                    if ( !is_readable( $fullPath ) ) {
+                        throw new \Exception( "Cannot find the view: {$view}" );
+                    }
                 }
             }
 

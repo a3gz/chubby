@@ -14,7 +14,7 @@ final class ModuleLoader
 	 *
 	 * @return array A list of module locations
 	 */
-	private static function findPackageModules()
+	public static function findPackageModules()
 	{
 		$map = require VENDOR_PATH . DIRECTORY_SEPARATOR . 'composer' . DIRECTORY_SEPARATOR . 'autoload_psr4.php';
 
