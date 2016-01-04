@@ -110,7 +110,7 @@ final class App
         
         $container = new \Slim\Container();
         
-        $this->modules = \Chubby\ModuleLoader::load( $container );
+        $this->modules = \Chubby\PackageLoader::loadModules( $container );
         
         if ( !is_array($this->modules) || !count($this->modules) ) {
             throw new \Exception( "Chubby Framework requires at least one module." );

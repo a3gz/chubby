@@ -8,35 +8,41 @@
  */
 namespace Chubby;
 
-final class ModuleLoader
+final class PackageLoader
 {
 	/**
-	 *
-	 * @return array A list of module locations
+	 * Scans composer's autoload_psr4 registry in search for Chubby packages of the required type. 
+     * 
+	 * @return array A list of package locations
 	 */
-	public static function findPackageModules()
+	public static function findPackages( $type )
 	{
-		$map = require VENDOR_PATH . DIRECTORY_SEPARATOR . 'composer' . DIRECTORY_SEPARATOR . 'autoload_psr4.php';
-
+        $validTypes = [ 'Modules', 'Locale' ];
+        
 		$sources = [];
-		foreach( $map as $namespace => $path ) {
-			$path = array_shift($path);
-			$mark = "Chubby\\Modules\\";
-			if ( strpos( $namespace, $mark ) === 0 ) {
-                // Remove ending back-slash 
-                if ( substr( $namespace, -1 ) == '\\' ) {
-                    $namespace = substr( $namespace, 0, -1 );
-                }
-                // Register the source 
-				$sources[] = [
-					'namespace' => $namespace,
-					'path' => str_replace( '/', DIRECTORY_SEPARATOR, $path )
-				];
-			}
-		}
+        
+        if ( in_array($type, $validTypes) ) {
+            $map = require VENDOR_PATH . DIRECTORY_SEPARATOR . 'composer' . DIRECTORY_SEPARATOR . 'autoload_psr4.php';
 
+            foreach( $map as $namespace => $path ) {
+                $path = array_shift($path);
+                $mark = "Chubby\\{$type}\\";
+                if ( strpos( $namespace, $mark ) === 0 ) {
+                    // Remove ending back-slash 
+                    if ( substr( $namespace, -1 ) == '\\' ) {
+                        $namespace = substr( $namespace, 0, -1 );
+                    }
+                    // Register the source 
+                    $sources[] = [
+                        'namespace' => $namespace,
+                        'path' => str_replace( '/', DIRECTORY_SEPARATOR, $path )
+                    ];
+                }
+            }
+        }
+        
 		return $sources;
-	} // findPackageModules()
+	} // findPackages()
 	
     
     /**
@@ -46,12 +52,12 @@ final class ModuleLoader
 	 * installed somewhere under APP_PATH/vendor. 
 	 * Installed modules are required to have the root namespace Chubby\Modues so they can be found by this loader. 
      */
-    public static function load( \Slim\Container $container )
+    public static function loadModules( \Slim\Container $container )
     {
 		$sources = array_merge([[
 				'path' => APP_PATH . DS . 'Modules'
 			]], 
-			self::findPackageModules() 
+			self::findPackages( 'Modules' ) 
 		);
 
         $modules = [];
@@ -100,9 +106,8 @@ final class ModuleLoader
 			}
 		}
 		
-        /**
-        * Modules are sorted by priority to allow for manual initialization sequence.
-        */
+        //
+        // Modules are sorted by priority to allow for manual initialization sequence.
         ksort($modules);
 
         return $modules;

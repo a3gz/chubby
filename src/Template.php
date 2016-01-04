@@ -146,7 +146,7 @@ class Template
                 if ( !is_readable( $fullPath ) ) {
                     
                     // Fallback to installed package modules
-                    $packages = \Chubby\ModuleLoader::findPackageModules();
+                    $packages = \Chubby\PackageLoader::findPackages( 'Modules' );
                     
                     foreach( $packages as $package ) {
                         $fullPath = $package['path'] . DS . $moduleName . DS . 'Themes' . DS . 'Default' . DS . 'Views' . DS . $path . '.php';
