@@ -102,13 +102,14 @@ final class App
      */
     public function run( $appNamespace = self::ROOT_NAMESPACE )
     {
-        /**
-         * Each application must exist inside its own namespace. Chubby uses that namespace to search for modules. 
-         */
+        //
+        // Each application must exist inside its own namespace. Chubby uses that namespace to search for modules. 
         $this->appNamespace = $appNamespace;
 
-        
-        $container = new \Slim\Container();
+        //
+        // Chubby lets Slim create the container and uses it later to inject additional services.
+        $this->slim = new \Slim\App();
+        $container = $this->slim->getContainer();
         
         $this->modules = \Chubby\PackageLoader::loadModules( $container );
         
@@ -116,16 +117,8 @@ final class App
             throw new \Exception( "Chubby Framework requires at least one module." );
         }
 
-        /**
-         * After loading all the modules, the container has everything (if anything) the modules 
-         * wanted to inject, so we can create the slim instance now
-         */
-        $this->slim = new \Slim\App( $container );
-
-        
-        /**
-         * Initialize the modules following the order given by each module's priority.
-         */
+        //
+        // Initialize the modules following the order given by each module's priority.
         foreach( $this->modules as $priority => $modules ) {
             foreach( $modules as $module ) {
                 $module['object']->setApp( $this );
