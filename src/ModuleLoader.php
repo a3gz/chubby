@@ -46,7 +46,7 @@ final class ModuleLoader
 	 * installed somewhere under APP_PATH/vendor. 
 	 * Installed modules are required to have the root namespace Chubby\Modues so they can be found by this loader. 
      */
-    public static function load( \Interop\Container\ContainerInterface $container )
+    public static function load( \Slim\Container $container )
     {
 		$sources = array_merge([[
 				'path' => APP_PATH . DS . 'Modules'
@@ -68,21 +68,23 @@ final class ModuleLoader
                 $className = "{$moduleName}Module";
 
 				if ( isset($source['namespace']) ) {
-					$fullClassName = "\\{$source['namespace']}";
+					$modulesNameSpace = "\\{$source['namespace']}";
 				} else {
-					$fullClassName = \Chubby\AppFactory::getApp()->appNamespace . "\\Modules";
+					$modulesNameSpace = \Chubby\AppFactory::getApp()->appNamespace . "\\Modules";
 				}
                 
-                $fullClassName .= "\\{$moduleName}\\{$className}";
+                $moduleClassName = "{$modulesNameSpace}\\{$moduleName}\\{$className}";
 
-				$moduleObject = new $fullClassName();
+                //
+                // Load the module class
+				$moduleObject = new $moduleClassName();
 
 				$required = 'Chubby\AbstractModule';
 				if ( !($moduleObject instanceof \Chubby\AbstractModule ) ) {
-					throw new \Exception( "Module class {$fullClassName} MUST extend {$required}." );
+					throw new \Exception( "Module class {$moduleClassName} MUST extend {$required}." );
 				}
 
-				$module = new $fullClassName();
+				$module = new $moduleClassName();
 				$priority = $module->getPriority();
 				if ($priority < 0) $priority = 0; // Highest allowed priority
 				
@@ -90,8 +92,6 @@ final class ModuleLoader
 				if ( ( $priority == 0 ) && ($className != 'MainModule') ) {
 					$priority = 1;
 				}
-				
-				$module->onLoad( $container );
 
 				$modules[$priority][$moduleName] = [
 					'object' => $module,
