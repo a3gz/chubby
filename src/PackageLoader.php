@@ -17,7 +17,7 @@ final class PackageLoader
 	 */
 	public static function findPackages( $type )
 	{
-        $validTypes = [ 'Modules', 'Locale' ];
+        $validTypes = [ 'Modules' ];
         
 		$sources = [];
         
@@ -43,7 +43,7 @@ final class PackageLoader
         
 		return $sources;
 	} // findPackages()
-	
+
     
     /**
      * Loads modules from all recognizable locations. 
@@ -111,7 +111,7 @@ final class PackageLoader
         ksort($modules);
 
         return $modules;
-    } // load()
+    } // loadModules()
     
 } // class 
 
