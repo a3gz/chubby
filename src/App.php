@@ -125,19 +125,6 @@ final class App
         }
        
         //
-        // Before initialize modules we boot the locale system. 
-        if ( !isset($container['locale']) || !is_object($container['locale']) 
-            || !in_array( '\Chubby\Interfaces\LocaleInterface', class_implements($container['locale']) )
-        ) {
-            if ( !isset($this->settings()['locale']) ) {
-                $this->settings()['locale'] = function( $request ) {
-                    return new \Chubby\Locale\Locale( $request );
-                };
-            }
-            $container['locale'] = call_user_func( $this->settings()['locale'], $container['request'] );
-        }
-        
-        //
         // Initialize the modules following the order given by each module's priority.
         foreach( $this->modules as $priority => $modules ) {
             foreach( $modules as $module ) {
@@ -148,27 +135,11 @@ final class App
             }
         }
 
+        //
         $this->slim->run();
 
         return $this;
     } // run()
-
-    
-    /**
-     *
-     */
-    public function settings()
-    {
-        static $settings = null; 
-        if ( $settings == null ) {
-            $settings = [];
-            $container = $this->slim->getContainer();
-            if ( isset($container['settings']) ) {
-                $settings = $container['settings'];
-            }
-        }
-        return $settings;
-    } // settings()
 } // class 
 
 // EOF
