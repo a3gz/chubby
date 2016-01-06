@@ -16,7 +16,6 @@ final class App
 
 
     /**
-     * $appNamespace 
      * @var string
      */
     public $appNamespace; 
@@ -28,13 +27,11 @@ final class App
     public $loader;
 
     /**
-     * $modules
      * @var array
      */
     protected $modules;
-
+    
     /**
-     * $slim 
      * @var  \Slim\App
      */
     protected $slim = null;
@@ -105,22 +102,46 @@ final class App
         //
         // Each application must exist inside its own namespace. Chubby uses that namespace to search for modules. 
         $this->appNamespace = $appNamespace;
-
+        
         //
-        // Chubby lets Slim create the container and uses it later to inject additional services.
-        $this->slim = new \Slim\App();
+        // Slim can be initiated in one of two ways:
+        // 1. Without a container. Slim will create the default container. 
+        // 2. Receiving a container in the constructor. We can pass Slim some settings and services 
+        //      by passing a pre-created container. We do this here via a configuration file. 
+        $container = [];
+        
+        $configFileName = APP_PATH . DIRECTORY_SEPARATOR . 'container.config.php';
+        if (is_readable($configFileName)) {
+            $container = new \Slim\Container( include $configFileName );
+        }
+        $this->slim = new \Slim\App( $container );
         $container = $this->slim->getContainer();
         
+        //
         $this->modules = \Chubby\PackageLoader::loadModules( $container );
         
         if ( !is_array($this->modules) || !count($this->modules) ) {
             throw new \Exception( "Chubby Framework requires at least one module." );
         }
-
+       
+        //
+        // Before initialize modules we boot the locale system. 
+        if ( !isset($container['locale']) || !is_object($container['locale']) 
+            || !in_array( '\Chubby\Interfaces\LocaleInterface', class_implements($container['locale']) )
+        ) {
+            if ( !isset($this->settings()['locale']) ) {
+                $this->settings()['locale'] = function( $request ) {
+                    return new \Chubby\Locale\Locale( $request );
+                };
+            }
+            $container['locale'] = call_user_func( $this->settings()['locale'], $container['request'] );
+        }
+        
         //
         // Initialize the modules following the order given by each module's priority.
         foreach( $this->modules as $priority => $modules ) {
             foreach( $modules as $module ) {
+                
                 $module['object']->setApp( $this );
 
                 $module['object']->init();
@@ -132,6 +153,22 @@ final class App
         return $this;
     } // run()
 
+    
+    /**
+     *
+     */
+    public function settings()
+    {
+        static $settings = null; 
+        if ( $settings == null ) {
+            $settings = [];
+            $container = $this->slim->getContainer();
+            if ( isset($container['settings']) ) {
+                $settings = $container['settings'];
+            }
+        }
+        return $settings;
+    } // settings()
 } // class 
 
 // EOF

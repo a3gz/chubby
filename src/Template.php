@@ -82,6 +82,15 @@ class Template
             return $this->data[$key];
         }
     } // __get()
+    
+    
+    /**
+     * @return bool
+     */
+    public function __isset( $key )
+    {
+        return isset($this->data[$key]);
+    } // __isset()
  
 
     /**
