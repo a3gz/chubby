@@ -32,10 +32,16 @@ final class PackageLoader
                     if ( substr( $namespace, -1 ) == '\\' ) {
                         $namespace = substr( $namespace, 0, -1 );
                     }
+                    
+                    // Remove the module name from the namespace, 
+                    // this will be resolved by the module loader later.
+                    $namespace = dirname( str_replace( '\\', DIRECTORY_SEPARATOR, $namespace ) );
+                    $namespace = str_replace( DIRECTORY_SEPARATOR, '\\', $namespace );
+                    
                     // Register the source 
                     $sources[] = [
                         'namespace' => $namespace,
-                        'path' => str_replace( '/', DIRECTORY_SEPARATOR, $path )
+                        'path' => dirname( str_replace( '/', DIRECTORY_SEPARATOR, $path ) )
                     ];
                 }
             }
@@ -59,7 +65,6 @@ final class PackageLoader
 			]], 
 			self::findPackages( 'Modules' ) 
 		);
-
         $modules = [];
 
 		foreach( $sources as $source ) {

@@ -35,7 +35,9 @@ abstract class AbstractMiddleware
     
     
 	/**
-     *
+     * This general method provide impelemenatation classes two oportunities to break the middleware 
+     * chain by returning a value from runBeforeNext() or runAfterNext(). 
+     * If any of these functions return a value other than null, that value will be returned by the __invoke() itself.
      */
 	public function __invoke( ServerRequestInterface $request, ResponseInterface $response, $next ) 
 	{
@@ -45,26 +47,38 @@ abstract class AbstractMiddleware
         $this->slim = \Chubby\AppFactory::getApp()->getSlim();
         $this->container = $this->slim->getContainer();
         
-        $this->runBeforeNext();
+        $returned = $this->runBeforeNext();
+        if ( $returned instanceof ResponseInterface ) {
+            return $returned;
+        }
         
-		$response = $next( $this->request, $this->response);
+		$this->response = $next( $this->request, $this->response);
         
-        $this->runAfterNext();
+        $returned = $this->runAfterNext();
+        if ( $returned instanceof ResponseInterface ) {
+            return $returned;
+        }
         
-		return $response;
+		return $this->response;
 	} // __invoke()
     
     
     /**
      * Called after the next middleware is invoked.
      */
-    public abstract function runAfterNext();
+    public function runAfterNext()
+    {
+        // dummy
+    } // runAfterNext()
     
     
     /**
      * Called before the next middleware is invoked.
      */
-    public abstract function runBeforeNext();
+    public function runBeforeNext()
+    {
+        // dummy
+    } // runBeforeNext()
     
 } // class 
 
