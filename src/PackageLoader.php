@@ -104,6 +104,10 @@ final class PackageLoader
 					$priority = 1;
 				}
 
+                if ( $moduleName != 'Main' ) {
+                    $moduleName = "{$modulesNameSpace}\\{$moduleName}";
+                }
+                
 				$modules[$priority][$moduleName] = [
 					'object' => $module,
 					'path' => $path

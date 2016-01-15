@@ -148,9 +148,7 @@ class Template
             $fullPath = APP_PATH . DS . 'Modules' . DS . $moduleName . DS . 'Themes' . DS . $this->getTheme() . DS . 'Views' . DS . $path . '.php';
 
             if ( !is_readable( $fullPath ) ) {
-                if ( !$moduleName != 'Main' ) {
-                    $fullPath = APP_PATH . DS . 'Modules' . DS . $moduleName . DS . 'Themes' . DS . 'Default' . DS . 'Views' . DS . $path . '.php';
-                }
+                $fullPath = APP_PATH . DS . 'Modules' . DS . $moduleName . DS . 'Themes' . DS . 'Default' . DS . 'Views' . DS . $path . '.php';
                 
                 if ( !is_readable( $fullPath ) ) {
                     
@@ -322,12 +320,15 @@ class Template
     public function using( $ref )
     {
         $parts = [];
-        if ( !preg_match( "#^([^\:\\\/]+):([^\:]+)$#", $ref, $parts ) ) {
-            throw new \Exception( "Invalid template reference: {$ref}" );
+        
+        $moduleName = '';
+        $templateFilename = $ref . '.php';
+        
+        if ( preg_match( "#^([^\:\\\/]+):([^\:]+)$#", $ref, $parts ) ) {
+            $moduleName = $parts[1];
+            $templateFilename = $parts[2] . '.php';
         }
         
-        $moduleName = $parts[1];
-        $templateFilename = $parts[2] . '.php';
         
         $this->fileName = ''; // Reset to override any previously used template
         
@@ -337,7 +338,28 @@ class Template
             $fullPath = APP_PATH . DS . 'Templates' . DS . 'Default' . DS . $templateFilename;
             
             if ( !is_readable( $fullPath ) ) {
-                throw new \Exception( "Cannot find a template from the given reference: {$ref}" );
+                $fullPath = APP_PATH . DS . 'Modules' . DS . $moduleName . DS . 'Themes' . DS . $this->getTheme()->name . DS . 'Templates' . DS . $templateFilename;
+                
+                if ( !is_readable( $fullPath ) ) {
+                    $fullPath = APP_PATH . DS . 'Modules' . DS . $moduleName . DS . 'Themes' . DS . 'Default' . DS . 'Templates' . DS . $templateFilename;
+
+                    if ( !is_readable( $fullPath ) ) {
+                        
+                        // Fallback to installed package modules
+                        $packages = \Chubby\PackageLoader::findPackages( 'Modules' );
+                        
+                        foreach( $packages as $package ) {
+                            $fullPath = $package['path'] . DS . $moduleName . DS . 'Themes' . DS . 'Default' . DS . 'Templates' . DS . $templateFilename;
+                            if ( is_readable( $fullPath ) ) {
+                                break;
+                            }
+                        }
+
+                        if ( !is_readable( $fullPath ) ) {
+                            throw new \Exception( "Cannot find a template from the given reference: {$ref}" );
+                        }
+                    }
+                }
             }
         }
         $this->fileName = $fullPath;
