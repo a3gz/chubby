@@ -228,6 +228,11 @@ class Template
     public function render( $viewIndex )
     {
         if ( isset($this->views[$viewIndex]) ) {
+            // Export data to the view 
+            foreach( $this->data as $__key => $__value ) {
+                $$__key = $__value;
+            }
+            
             ob_start();
                 include $this->views[$viewIndex];
                 $view = ob_get_contents();
