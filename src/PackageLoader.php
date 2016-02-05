@@ -105,7 +105,11 @@ final class PackageLoader
 				}
 
                 if ( $moduleName != 'Main' ) {
-                    $moduleName = "{$modulesNameSpace}\\{$moduleName}";
+                    if ( isset($modules[$priority][$moduleName]) ) {
+                        // Resolve name collisions by adding an underscore separated namespace prefix.
+                        $nameSpace = str_replace('\\', '_', $moduleNameSpace);
+                        $moduleName = "{$nameSpace}_{$moduleName}";
+                    }
                 }
                 
 				$modules[$priority][$moduleName] = [
