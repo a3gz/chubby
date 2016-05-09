@@ -118,7 +118,7 @@ final class PackageLoader
 				];
 			}
 		}
-		
+
         //
         // Modules are sorted by priority to allow for manual initialization sequence.
         ksort($modules);
