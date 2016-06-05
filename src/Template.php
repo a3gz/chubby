@@ -186,19 +186,18 @@ class Template
     private function preProcessView( $view )
     {
         $dom = \SunraDomParser\HtmlDomParser::fromString( $view );
-        
-        foreach( $this->placeholders as $placeholder => $content ) {
-            // Search for head content 
-            $nodes = $dom->find( $placeholder );
-            
-            foreach( $nodes as $node ) {
-                $this->placeholders[$placeholder][] = $node->innerText();
-                $node->outerText = '';
+        if ( is_object($dom) ) {
+            foreach( $this->placeholders as $placeholder => $content ) {
+                // Search for head content 
+                $nodes = $dom->find( $placeholder );
+                
+                foreach( $nodes as $node ) {
+                    $this->placeholders[$placeholder][] = $node->innerText();
+                    $node->outerText = '';
+                }
             }
+            $view = $dom->save();
         }
-        
-        $view = $dom->save();
-
         return $view;
     } // preProcessView()
     
@@ -307,6 +306,7 @@ class Template
             if ( $dom && $dirty ) {
                 $buffer = $dom->save();
             } 
+            
         }
         
         return $buffer;
