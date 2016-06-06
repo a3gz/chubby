@@ -61,6 +61,30 @@ final class App
 		return $modules;
 	} // getModules()
 	
+    
+    /**
+     *
+     */
+    private function getContainerConfig() 
+    {
+        $container = [];
+        
+        $configFilePath = APP_PATH . DIRECTORY_SEPARATOR;
+        $configFileName =  'container.config.php';
+        
+        // Allow for an alternative container configuration file when in DEBUG mode.
+        if ( $this->isDebug() ) {
+            $configFileName = "debug.{$configFileName}";
+        }
+        
+        $configFileName = "{$configFilePath}{$configFileName}";
+        if (is_readable($configFileName)) {
+            $container = new \Slim\Container( include $configFileName );
+        }
+        
+        return $container;
+    } // getContainerConfig()
+    
 
     /**
      * Returns the instance of the Slimn application
@@ -108,12 +132,7 @@ final class App
         // 1. Without a container. Slim will create the default container. 
         // 2. Receiving a container in the constructor. We can pass Slim some settings and services 
         //      by passing a pre-created container. We do this here via a configuration file. 
-        $container = [];
-        
-        $configFileName = APP_PATH . DIRECTORY_SEPARATOR . 'container.config.php';
-        if (is_readable($configFileName)) {
-            $container = new \Slim\Container( include $configFileName );
-        }
+        $container = $this->getContainerConfig();
         $this->slim = new \Slim\App( $container );
         $container = $this->slim->getContainer();
         
