@@ -74,7 +74,10 @@ final class App
         
         // Allow for an alternative container configuration file when in DEBUG mode.
         if ( $this->isDebug() ) {
-            $configFileName = "debug.{$configFileName}";
+            $debugConfigFileName = "debug.{$configFileName}";
+            if ( is_readable( "{$configFilePath}{$debugConfigFileName}" ) ) {
+                $configFileName = $debugConfigFileName;
+            }
         }
         
         $configFileName = "{$configFilePath}{$configFileName}";
