@@ -223,13 +223,20 @@ class Template
      * Renders a previously imported view.
      *
      * @param string $viewIndex A string index referencing a view in the local $views array
+     * @param mixed $data Additional data passed to the renderer at render-time 
      */
-    public function render( $viewIndex )
+    public function render( $viewIndex, $data = null )
     {
         if ( isset($this->views[$viewIndex]) ) {
             // Export data to the view 
             foreach( $this->data as $__key => $__value ) {
                 $$__key = $__value;
+            }
+            
+            if ( ($data != null) && is_array($data) ) {
+                foreach( $data as $__key => $__value ) {
+                    $$__key = $__value;
+                }
             }
             
             ob_start();
