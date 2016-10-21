@@ -17,21 +17,20 @@ final class AppFactory
      */
     public static function getApp()
     {
-        /**
-         * Application singleton
-         */
+        //
+        // Application singleton
+        //
         static $app = null; 
 
-        /**
-         * Build the application if it hasn't been built yet
-         */
-        if ( $app == null )
-        {
+        //
+        // Build the application if it hasn't been built yet
+        //
+        if ( $app == null ) {
             global $argv;
 
-            if ( isset($argv) && count($argv) && (basename($argv[0]) == 'index.php') ) { 
+            if ( ( PHP_SAPI == 'cli' ) && isset($argv) && count($argv) && (basename($argv[0]) == 'index.php') ) { 
                 // This is a command line request             
-                // to-do: console app
+                $app = (new \Chubby\CliApp())->withArgv( $argv );
             } else  {
                 // This is an HTTP request                
                 $app = new \Chubby\App();

@@ -8,38 +8,31 @@
  */
 namespace Chubby;
 
-final class App implements AppInterface
+final class CliApp implements AppInterface
 {
     const ROOT_NAMESPACE = 'ChubbyApp';
 	const WITH_PRIORITIES = true;
 	const IGNORE_PRIORITIES = false;
-
-
+    
+    /**
+     * @var array 
+     */
+    protected $argv;
+    
+    
     /**
      * @var string
      */
-    public $appNamespace; 
-
-    /**
-     * Instance of Composer's autoloader
-     * @var \ComposerAutoloaderX
-     */
-    public $loader;
-
-    /**
-     * @var array
-     */
-    protected $modules;
+    protected $method;
     
-    /**
-     * @var  \Slim\App
-     */
-    protected $slim = null;
-
-	
-	
+     
+     
 	/**
-	 * @inheritdoc
+	 * Returns the list of registered modules
+	 *
+	 * @param bool $priorities Modifier used to request the modules discriminated by priority or all together as a plain list.
+	 *
+	 * @return array List of registered modules.
 	 */
 	public function getModules( $priorities = self::IGNORE_PRIORITIES )
 	{
@@ -84,9 +77,47 @@ final class App implements AppInterface
         return $container;
     } // getContainerConfig()
     
+    
+    /**
+     * Setup environment variables in a way taht Slim can process them.
+     *
+     * @return \Slim\Http\Environment
+     */
+    protected function getEnvironmentSettings()
+    {
+        $r = \Slim\Http\Environment::mock([
+            'REQUEST_METHOD' => $this->method,
+            'REQUEST_URI' => $this->getRequestUri()
+        ]);
+        return $r;
+    } // getEnvironmentSettings()
+    
+    
+    /**
+     * CLI call arguments are stored locally as an array. 
+     * For this information to be recognized by Slim as a REQUEST_URI string, we will 
+     * assume that each argument in the command line is a URL component as in the following example:
+     *      php index.php users 123 
+     * will become
+     *      /users/123 
+     *
+     * @return string
+     */
+    public function getRequestUri()
+    {
+        $r = implode('/', $this->argv);
+        
+        // Make sure that the request uri string begins with a slash (/). 
+        if ( substr($r, 0, 1) != '/' ) {
+            $r = "/{$r}";
+        }
+        
+        return $r;
+    } // getRequestUri()
+    
 
     /**
-	 * @inheritdoc
+     * Returns the instance of the Slimn application
      */
     public function getSlim()
     {
@@ -98,7 +129,7 @@ final class App implements AppInterface
 
 
     /**
-	 * @inheritdoc
+     *
      */
     public function isDebug()
     {
@@ -116,7 +147,9 @@ final class App implements AppInterface
 
 
     /**
-	 * @inheritdoc
+     * This is where things get in motion. 
+     * Every Chubby application is composed of one or more modules. Chubby expects that at least one module exists, otherwise it will 
+     * throw an error.
      */
     public function run( $appNamespace = self::ROOT_NAMESPACE )
     {
@@ -130,6 +163,11 @@ final class App implements AppInterface
         // 2. Receiving a container in the constructor. We can pass Slim some settings and services 
         //      by passing a pre-created container. We do this here via a configuration file. 
         $container = $this->getContainerConfig();
+        
+        //
+        // Pass environment settings to Slim so the CLI request is properly recognized
+        $container['environment'] = $this->getEnvironmentSettings();
+    
         $this->slim = new \Slim\App( $container );
         $container = $this->slim->getContainer();
         
@@ -156,6 +194,29 @@ final class App implements AppInterface
 
         return $this;
     } // run()
+    
+    
+    /**
+     * Returns the application object having the command line arguments.
+     *
+     * @param array $argv 
+     *
+     * @return $this
+     */
+    public function withArgv( $argv )
+    {
+        $clone = clone $this;
+        
+        // remove the script file name from the arguments.
+        array_shift( $argv ); 
+        
+        // The first argument MUST ALWASY BE the method: 
+        $method = strtoupper( array_shift( $argv ) );
+        
+        $clone->method = $method; 
+        $clone->argv = $argv;
+        return $clone;
+    } // withArgv()
 } // class 
 
 // EOF

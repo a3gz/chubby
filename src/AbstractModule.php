@@ -95,7 +95,7 @@ abstract class AbstractModule
     /**
      * Makes the chubby application available to the module
      */
-    public function setApp( \Chubby\App $app )
+    public function setApp( \Chubby\AppInterface $app )
     {
         $this->app = $app;
         return $this;
