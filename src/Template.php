@@ -177,7 +177,7 @@ class Template
     
     
     /**
-     * Scan views for placeholders, save the content and remove the placeholders from the view.
+     * Scan views for placeholders.
      *
      * @param string $view An included and PHP processed view. 
      *
@@ -188,7 +188,6 @@ class Template
         $dom = \SunraDomParser\HtmlDomParser::fromString( $view );
         if ( is_object($dom) ) {
             foreach( $this->placeholders as $placeholder => $content ) {
-                // Search for head content 
                 $nodes = $dom->find( $placeholder );
                 
                 foreach( $nodes as $node ) {
@@ -239,11 +238,17 @@ class Template
                 }
             }
             
-            ob_start();
-                include $this->views[$viewIndex];
-                $view = ob_get_contents();
-                $view = $this->preProcessView( $view );
-            ob_end_clean();
+            try {
+                ob_start();
+                    include $this->views[$viewIndex];
+                    $view = ob_get_contents();
+                    $view = $this->preProcessView( $view );
+                ob_end_clean();
+            } catch( \Exception $e ) {
+                echo $e;
+                die();
+            }
+            
             echo $view;
         }
     } // render()
@@ -298,7 +303,8 @@ class Template
             
             // Inject custom placeholders content into the final page.
             foreach( $this->placeholders as $placeholder => $content ) {
-                if ( $domNode = $dom->find($placeholder, 0) ) {
+                $i = 0;
+                while ( $domNode = $dom->find($placeholder, $i++) ) {
                     $outerText = '';
                     if ( count($content) ) {
                         $outerText = implode($content, "\n"); 
