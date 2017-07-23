@@ -1,0 +1,15 @@
+{
+    "name": "a3gz/chubby",
+    "description": "Chubby dependencies",
+    "require": {
+        "slim/slim": "3.0",
+        "monolog/monolog": "^1.23",
+        "a3gz/chubby-view": "^1.0",
+        "a3gz/chubby-locale": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Templates\\": "./app/views/templates"
+        }
+    }
+}
