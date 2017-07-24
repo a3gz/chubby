@@ -15,7 +15,6 @@ Go to the directory where you want the new application to sit, then create the p
 
     composer create-project a3gz/chubby -s dev
 
-
 This will create a project called `chubby`. 
 Chubby needs all required dependencies to sit on the `src` directory:
 
@@ -27,7 +26,11 @@ Finally go to your browser and request:
     .../chubby/src/public/hello/world
 
 
-It is very unlikely that you'll want your application to be called `chubby`, so you may want to rename that directory.
+It's very unlikely that you'll want your application to be called `chubby`, so you may want to rename that directory. You can also do it when you create the project: 
+
+    composer create-project a3gz/chubby my-app -s dev
+
+Now your application is in `./my-app`.
 
 ## Why Chubby at all?
 
