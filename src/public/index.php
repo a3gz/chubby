@@ -25,11 +25,6 @@
  *                               |    +-- config
  *                               +-- vendor
  */
-if ( !is_readable( 'bootstrap.php' ) ) {
-    throw new \Exception( 'Missing file: ' . realpath(__DIR__ . '/bootstrap.php') );
-}
-include 'bootstrap.php';
-
 defined( 'PUBLIC_HTML' )        || define( 'PUBLIC_HTML', dirname(dirname(dirname(__DIR__))) );
 defined( 'PRIVATE_HTML' )       || define( 'PRIVATE_HTML', PUBLIC_HTML );
 
@@ -61,6 +56,7 @@ if ( is_dir("{$__['cfgPath']}.local") ) {
     $__['cfgPath'] .= '.local';
 } 
 $__['config'] = include( $__['cfgPath'] . DIRECTORY_SEPARATOR . 'config.php' );
+
 $APP = new \Slim\App([ 'settings' => $__['config'] ]);
 
 /**
@@ -75,11 +71,15 @@ foreach( $__['dir'] as $__fileName ) {
     if ( (substr( $__fileName, 0, 1 ) == '.') || ( $__fileName == 'config.php' ) ) continue;
     $__fullFileName = "{$__['cfgPath']}/{$__fileName}";
     if ( is_readable($__fullFileName) ) {
-        $__key = substr( $__fileName, 0, -4 ); // Remove the file extension
+        $__key = \A3gZ\Inflector\Inflector::toCamelBack(substr( $__fileName, 0, -4 )); // Remove the file extension
         $__['container'][$__key] = include $__fullFileName;
     }
 }
 
+if ( !is_readable( 'bootstrap.php' ) ) {
+    throw new \Exception( 'Missing file: ' . realpath(__DIR__ . '/bootstrap.php') );
+}
+include 'bootstrap.php';
 
 /**
  * Import routes. 

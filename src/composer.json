@@ -4,7 +4,8 @@
     "require": {
         "slim/slim": "3.0",
         "monolog/monolog": "^1.23",
-        "a3gz/chubby-view": "dev-master"
+        "a3gz/chubby-view": "dev-master",
+        "a3gz/inflector": "^1.0.0"
     },
     "autoload": {
         "psr-4": {
