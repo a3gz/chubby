@@ -12,6 +12,6 @@ $APP->get('/hello/{name}', function (Request $request, Response $response) {
     $tpl->define('content', 'src/app/views/components/hello')
         ->setData(['name' => $name])
         ->write( $response );
-});
+})->setName('hello');
 
 // EOF
