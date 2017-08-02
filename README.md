@@ -46,7 +46,7 @@ Optionally we can provide Slim with additional dependencies by adding more files
 
     return function($c) {
         $logFileName = PRIVATE_APP_PATH . DIRECTORY_SEPARATOR . basename(PRIVATE_APP_PATH) . '.log'; 
-        $logger = new \Monolog\Logger('pwless');
+        $logger = new \Monolog\Logger('chubby');
         $file_handler = new \Monolog\Handler\StreamHandler( $logFileName );
         $logger->pushHandler($file_handler);
         return $logger;   
@@ -57,6 +57,10 @@ Chubby will inject the dependency in Slim's container under the same name as the
 ### Organizing routes
 
 Chubby assumes that all our routes are sitting on `src/app/routes`. Inside this directory we can create as many files and sub-directories as we need.
+
+## Customizing the environment 
+
+It is possible to change everything that's assumed by chubby by re-defining the path constants to adapt to specific needs. This is what the file `local.php` is for.
 
 ## Contact the author
 

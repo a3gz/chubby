@@ -25,11 +25,21 @@
  *                               |    +-- config
  *                               +-- vendor
  */
-defined( 'PUBLIC_HTML' )        || define( 'PUBLIC_HTML', dirname(dirname(dirname(__DIR__))) );
-defined( 'PRIVATE_HTML' )       || define( 'PRIVATE_HTML', PUBLIC_HTML );
-
 $__ = [];
 $__['appName'] = basename( realpath(dirname(dirname(__DIR__))) );
+
+/**
+ * Use the local.php file to define your own paths to make things work in your specific environment. 
+ */
+if ( is_readable( 'local.php' ) ) {
+    include 'local.php';
+}
+
+/**
+ * Defuault constants
+ */
+defined( 'PUBLIC_HTML' )        || define( 'PUBLIC_HTML', dirname(dirname(dirname(__DIR__))) );
+defined( 'PRIVATE_HTML' )       || define( 'PRIVATE_HTML', PUBLIC_HTML );
 
 defined( 'PUBLIC_APP_PATH' )    || define( 'PUBLIC_APP_PATH',  PUBLIC_HTML . DIRECTORY_SEPARATOR . $__['appName'] );
 defined( 'PRIVATE_APP_PATH' )   || define( 'PRIVATE_APP_PATH', PRIVATE_HTML . DIRECTORY_SEPARATOR . $__['appName'] );
