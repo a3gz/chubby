@@ -8,8 +8,8 @@ use \Psr\Http\Message\ResponseInterface as Response;
 $APP->get('/hello/{name}', function (Request $request, Response $response) {
     $name = $request->getAttribute('name');
 
-    $tpl = new \Templates\DefaultTemplate();
-    $tpl->define('content', 'src/app/views/components/hello')
+    $tpl = new \Templates\DefaultTemplate(realpath(dirname(__DIR__)));
+    $tpl->define('content', 'views/components/hello')
         ->setData(['name' => $name])
         ->write( $response );
 })->setName('hello');
