@@ -113,13 +113,14 @@ function __chubbyIncludeRoutes( $basePath ) {
     foreach( $__['dir'] as $__fileName ) {
         if ( substr( $__fileName, 0, 1 ) == '.' ) continue;
 
-        $__fullFileName = realpath("{$basePath}/{$__fileName}");
-
-        if ( is_dir($__fullFileName) && defined('DEEP_ROUTES') && DEEP_ROUTES ) {
-            __chubbyIncludeRoutes( $__fullFileName );
-        } elseif ( is_readable($__fullFileName) ) {
-            include $__fullFileName;
+        $__['fullFileName'] = realpath("{$basePath}/{$__fileName}");
+        $__['ignore'] = file_exists(realpath("{$basePath}/.ignore"));
+        if ( is_dir($__['fullFileName']) ) {
+            __chubbyIncludeRoutes( $__['fullFileName'] );
+        } elseif ( is_readable($__['fullFileName']) && !$__['ignore'] ) {
+            include $__['fullFileName'];
         }
+        
     }
 } // __chubbyIncludeRoutes()
 
