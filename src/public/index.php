@@ -25,7 +25,6 @@
  *                               |    +-- config
  *                               +-- vendor
  */
-$__ = [];
 
 /**
  * Use the local.php file to define your own paths to make things work in your specific environment. 
@@ -50,6 +49,8 @@ defined( 'LOG_PATH' )           || define( 'LOG_PATH',          PRIVATE_APP_PATH
  * Include composer's autoload
  */
 include VENDOR_PATH . DIRECTORY_SEPARATOR . 'autoload.php';
+
+$__ = [];
 
 /**
  * Grab the config.php and use those settings to create the Slim application. 
