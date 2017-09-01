@@ -26,7 +26,6 @@
  *                               +-- vendor
  */
 $__ = [];
-$__['appName'] = basename( realpath(dirname(dirname(__DIR__))) );
 
 /**
  * Use the local.php file to define your own paths to make things work in your specific environment. 
@@ -35,15 +34,12 @@ if ( is_readable( 'local.php' ) ) {
     include 'local.php';
 }
 
-/**
- * Defuault constants
- */
-defined( 'PUBLIC_HTML' )        || define( 'PUBLIC_HTML',       dirname(dirname(dirname(__DIR__))) );
-defined( 'PRIVATE_HTML' )       || define( 'PRIVATE_HTML',      PUBLIC_HTML );
+// Path to your application's public files. Normally this is somewhere below .../public_html
+defined( 'PUBLIC_APP_PATH' )    || define( 'PUBLIC_APP_PATH',   dirname(dirname(__DIR__)) );
+// Path to your application's private files. This can be same as PUBLIC_APP_PATH or some other directory outside .../public_html
+defined( 'PRIVATE_APP_PATH' )   || define( 'PRIVATE_APP_PATH',  PUBLIC_APP_PATH );
 
-defined( 'PUBLIC_APP_PATH' )    || define( 'PUBLIC_APP_PATH',   PUBLIC_HTML );
-defined( 'PRIVATE_APP_PATH' )   || define( 'PRIVATE_APP_PATH',  PRIVATE_HTML . "/{$__['appName']}" );
-
+// Some application specific directories, usually kept in the private directory. 
 defined( 'APP_PATH' )           || define( 'APP_PATH',          PRIVATE_APP_PATH . '/src/app' );
 defined( 'VENDOR_PATH' )        || define( 'VENDOR_PATH',       PRIVATE_APP_PATH . '/src/vendor' );
 defined( 'ROUTES_PATH' )        || define( 'ROUTES_PATH',       PRIVATE_APP_PATH . '/src/app/routes' );
