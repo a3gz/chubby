@@ -38,20 +38,17 @@ if ( is_readable( 'local.php' ) ) {
 /**
  * Defuault constants
  */
-defined( 'PUBLIC_HTML' )        || define( 'PUBLIC_HTML', dirname(dirname(dirname(__DIR__))) );
-defined( 'PRIVATE_HTML' )       || define( 'PRIVATE_HTML', PUBLIC_HTML );
+defined( 'PUBLIC_HTML' )        || define( 'PUBLIC_HTML',       dirname(dirname(dirname(__DIR__))) );
+defined( 'PRIVATE_HTML' )       || define( 'PRIVATE_HTML',      PUBLIC_HTML );
 
-defined( 'PUBLIC_APP_PATH' )    || define( 'PUBLIC_APP_PATH',  PUBLIC_HTML . DIRECTORY_SEPARATOR . $__['appName'] );
-defined( 'PRIVATE_APP_PATH' )   || define( 'PRIVATE_APP_PATH', PRIVATE_HTML . DIRECTORY_SEPARATOR . $__['appName'] );
+defined( 'PUBLIC_APP_PATH' )    || define( 'PUBLIC_APP_PATH',   PUBLIC_HTML );
+defined( 'PRIVATE_APP_PATH' )   || define( 'PRIVATE_APP_PATH',  PRIVATE_HTML . "/{$__['appName']}" );
 
-defined( 'APP_PUBLIC_PATH' )    || define( 'APP_PUBLIC_PATH',  realpath(PUBLIC_APP_PATH . '/src/public') );
-defined( 'APP_SRC_PATH' )       || define( 'APP_SRC_PATH',     PRIVATE_APP_PATH . DIRECTORY_SEPARATOR . 'src' );
-defined( 'APP_PATH' )           || define( 'APP_PATH',         APP_SRC_PATH . DIRECTORY_SEPARATOR . 'app' );
-defined( 'VENDOR_PATH' )        || define( 'VENDOR_PATH',      APP_SRC_PATH . DIRECTORY_SEPARATOR . 'vendor' );
-defined( 'ROUTES_PATH' )        || define( 'ROUTES_PATH',      APP_PATH . DIRECTORY_SEPARATOR . 'routes' );
-
-defined( 'CONFIG_PATH' )        || define( 'CONFIG_PATH',      APP_PATH . DIRECTORY_SEPARATOR . 'config' );
-defined( 'LOG_PATH' )           || define( 'LOG_PATH',         PRIVATE_APP_PATH . DIRECTORY_SEPARATOR . 'log' );
+defined( 'APP_PATH' )           || define( 'APP_PATH',          PRIVATE_APP_PATH . '/src/app' );
+defined( 'VENDOR_PATH' )        || define( 'VENDOR_PATH',       PRIVATE_APP_PATH . '/src/vendor' );
+defined( 'ROUTES_PATH' )        || define( 'ROUTES_PATH',       PRIVATE_APP_PATH . '/src/app/routes' );
+defined( 'CONFIG_PATH' )        || define( 'CONFIG_PATH',       PRIVATE_APP_PATH . '/src/app/config' );
+defined( 'LOG_PATH' )           || define( 'LOG_PATH',          PRIVATE_APP_PATH . '/src/log' );
 
 /**
  * Include composer's autoload
