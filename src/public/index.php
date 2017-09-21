@@ -12,8 +12,8 @@
  *                              +-- public 
  *                              +-- vendor
  *
- * Chubby allows to have the content of app-name/src inside a directory outside
- * public_html, which would result in the following structure: 
+ * Chubby allows to have the content of app-name/src outside public_html,
+ * which would result in the following structure: 
  *
  * /path-to/public_html/app-name
  *                         +-- src
@@ -48,7 +48,7 @@ defined( 'LOG_PATH' )           || define( 'LOG_PATH',          PRIVATE_APP_PATH
 /**
  * Include composer's autoload
  */
-include VENDOR_PATH . DIRECTORY_SEPARATOR . 'autoload.php';
+include VENDOR_PATH . '/autoload.php';
 
 $__ = [];
 
@@ -59,7 +59,7 @@ $__['cfgPath'] = CONFIG_PATH;
 if ( is_dir("{$__['cfgPath']}.local") ) {
     $__['cfgPath'] .= '.local';
 } 
-$__['config'] = include( $__['cfgPath'] . DIRECTORY_SEPARATOR . 'config.php' );
+$__['config'] = include( $__['cfgPath'] . '/config.php' );
 
 $APP = new \Slim\App([ 'settings' => $__['config'] ]);
 
