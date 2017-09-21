@@ -9,21 +9,26 @@
  *                         +-- src
  *                              +-- app
  *                              |    +-- config
- *                              +-- public 
+ *                              |    +-- routes
+ *                              +-- log
  *                              +-- vendor
  *
  * Chubby allows to have the content of app-name/src outside public_html,
  * which would result in the following structure: 
  *
  * /path-to/public_html/app-name
- *                         +-- src
- *                              +-- public 
  *
  * /path-to/private_html/app-name
- *                          +-- src
- *                               +-- app 
- *                               |    +-- config
- *                               +-- vendor
+ *                         +-- src
+ *                              +-- app
+ *                              |    +-- config
+ *                              |    +-- routes
+ *                              +-- log
+ *                              +-- vendor
+ *
+ * Note here that it isn't really necessary that the private files are located below app-name/src 
+ * we could just place all the files below app-name. In this case though we need to adjust all the 
+ * applicaiton specific directories below; for instance: from /src/app to /app, and so on. 
  */
 
 /**
@@ -34,9 +39,12 @@ if ( is_readable( 'local.php' ) ) {
 }
 
 // Path to your application's public files. Normally this is somewhere below .../public_html
-defined( 'PUBLIC_APP_PATH' )    || define( 'PUBLIC_APP_PATH',   dirname(dirname(__DIR__)) );
+defined( 'PUBLIC_APP_PATH' )    || define( 'PUBLIC_APP_PATH',   __DIR__ );
 // Path to your application's private files. This can be same as PUBLIC_APP_PATH or some other directory outside .../public_html
 defined( 'PRIVATE_APP_PATH' )   || define( 'PRIVATE_APP_PATH',  PUBLIC_APP_PATH );
+// The line below shows how this would look like if the source files were located in some directory 
+// outside the public_html. 
+// defined( 'PRIVATE_APP_PATH' )   || define( 'PRIVATE_APP_PATH',  '/home/my-home/private_html' );
 
 // Some application specific directories, usually kept in the private directory. 
 defined( 'APP_PATH' )           || define( 'APP_PATH',          PRIVATE_APP_PATH . '/src/app' );
@@ -120,6 +128,6 @@ function __chubbyIncludeRoutes( $basePath ) {
 
 unset($__); // Destroy all the temporary global variables.
 
-$APP->run(); 
+$APP->run(); // Run Slim, run!
 
 // EOF
