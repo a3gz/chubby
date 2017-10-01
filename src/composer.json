@@ -2,7 +2,7 @@
     "name": "a3gz/chubby",
     "description": "Chubby dependencies",
     "require": {
-        "slim/slim": "3.0",
+        "slim/slim": "3.5",
         "monolog/monolog": "^1.23",
         "a3gz/chubby-view": "dev-master",
         "a3gz/inflector": "^2.0.0"
