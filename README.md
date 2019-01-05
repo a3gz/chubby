@@ -33,6 +33,20 @@ It is also possible to do this when you create the project:
 
 Now your application is in `./my-app`.
 
+### Running with Docker Compose
+
+    docker-compose up [-d]
+
+The provided `docker-compose.yml` maps to the host's 9999 port so you should be able to see the site in the following local address:
+
+    http://localhost:9999
+
+## Console request
+
+    php console.php path to resource
+
+The above command will invoke the route: `/path/to/resource`.
+
 ## Why Chubby at all?
 
 Chubby is a working application template that offers one possible implementation of the application structure proposed in Slim's documentation. 
@@ -55,14 +69,6 @@ Optionally we can provide Slim with additional dependencies by adding more files
     };
 
 Chubby will inject the dependency in Slim's container under the same name as the file, in this case: `logger`: `$container['logger']`.
-
-### Organizing routes
-
-Chubby assumes that all our routes are sitting on `src/app/routes`. Inside this directory we can create as many files and sub-directories as we need.
-
-## Customizing the environment 
-
-It is possible to change everything that's assumed by chubby by re-defining the path constants to adapt to specific needs. This is what the file `local.php` is for.
 
 ## Contact the author
 
