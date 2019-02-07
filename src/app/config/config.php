@@ -1,7 +1,7 @@
-<?php 
+<?php
 return [
-    'displayErrorDetails' => true,
-    'addContentLengthHeader' => false,
+  'displayErrorDetails' => true,
+  'addContentLengthHeader' => false,
 ];
 
 // EOF
