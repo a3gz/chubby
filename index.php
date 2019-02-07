@@ -31,26 +31,26 @@ $__['dir'] = scandir($__['cfgPath']);
  */
 sort($__['dir']);
 foreach( $__['dir'] as $__fileName ) {
-    if ( (substr( $__fileName, 0, 1 ) == '.') || ( $__fileName == 'config.php' ) ) continue;
-    $__fullFileName = "{$__['cfgPath']}/{$__fileName}";
-    if ( is_readable($__fullFileName) ) {
-        $__fileName = preg_replace('#^[0-9]+-#', '', $__fileName);
-        $__key = substr($__fileName, 0, -4); // Remove the file extension
-        $__['container'][$__key] = include $__fullFileName;
-    }
+  if ( (substr( $__fileName, 0, 1 ) == '.') || ( $__fileName == 'config.php' ) ) continue;
+  $__fullFileName = "{$__['cfgPath']}/{$__fileName}";
+  if ( is_readable($__fullFileName) ) {
+    $__fileName = preg_replace('#^[0-9]+-#', '', $__fileName);
+    $__key = substr($__fileName, 0, -4); // Remove the file extension
+    $__['container'][$__key] = include $__fullFileName;
+  }
 }
 
 $__['path'] = ROUTES_PATH;
 
 if ( defined('CONSOLE') ) {
-    $__['container']['environment'] = function($c) {
-        $argv = $GLOBALS['argv'];
-        array_shift($argv);
-        $pathInfo = implode('/', $argv);
-        $env = ['REQUEST_URI' => "/{$pathInfo}"];
-        return \Slim\Http\Environment::mock($env);
-      };
-    $__['path'] .= '/console';
+  $__['container']['environment'] = function($c) {
+    $argv = $GLOBALS['argv'];
+    array_shift($argv);
+    $pathInfo = implode('/', $argv);
+    $env = ['REQUEST_URI' => "/{$pathInfo}"];
+    return \Slim\Http\Environment::mock($env);
+  };
+  $__['path'] .= '/console';
 }
 
 __chubbyIncludeRoutes( $__['path'] );
@@ -59,20 +59,19 @@ $APP->run(); // Run Slim, run!
 
 /***************************************************************/
 function __chubbyIncludeRoutes( $basePath ) {
-    global $APP;
-
-    $__['dir'] = scandir( $basePath );
-    if ( !is_readable(realpath("{$basePath}/.ignore")) ) {
-        foreach( $__['dir'] as $__fileName ) {
-            if ( substr( $__fileName, 0, 1 ) == '.' ) continue;
-            $__['fullFileName'] = "{$basePath}/{$__fileName}";
-            if ( is_dir($__['fullFileName']) ) {
-                __chubbyIncludeRoutes( $__['fullFileName'] );
-            } elseif ( is_readable($__['fullFileName']) ) {
-                include $__['fullFileName'];
-            }
-        }
+  global $APP;
+  $__['dir'] = scandir( $basePath );
+  if ( !is_readable(realpath("{$basePath}/.ignore")) ) {
+    foreach( $__['dir'] as $__fileName ) {
+      if ( substr( $__fileName, 0, 1 ) == '.' ) continue;
+      $__['fullFileName'] = "{$basePath}/{$__fileName}";
+      if ( is_dir($__['fullFileName']) ) {
+        __chubbyIncludeRoutes( $__['fullFileName'] );
+      } elseif ( is_readable($__['fullFileName']) ) {
+        include $__['fullFileName'];
+      }
     }
+  }
 }
 
 // EOF

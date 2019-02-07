@@ -1,13 +1,13 @@
 {
-    "name": "a3gz/chubby",
-    "type": "project",
-    "description": "An application template for Slim 3",
-    "keywords": ["php", "framework", "slim", "application template"],
-    "authors": [
-        {
-            "name": "Alejandro Arbiza",
-            "email": "alejandro@roetal.com",
-            "homepage": "https://www.roetal.com"
-        }
-    ]
+  "name": "a3gz/chubby",
+  "type": "project",
+  "description": "An application template for Slim 3",
+  "keywords": ["php", "framework", "slim", "application template"],
+  "authors": [
+    {
+      "name": "Alejandro Arbiza",
+      "email": "alejandro@roetal.com",
+      "homepage": "https://www.roetal.com"
+    }
+  ]
 }
