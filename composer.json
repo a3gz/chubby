@@ -3,6 +3,7 @@
   "type": "project",
   "description": "An application template for Slim 3",
   "keywords": ["php", "framework", "slim", "application template"],
+  "license": "MIT",
   "authors": [
     {
       "name": "Alejandro Arbiza",
