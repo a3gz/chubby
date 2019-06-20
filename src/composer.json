@@ -4,12 +4,11 @@
     "require": {
         "slim/slim": "3.5",
         "monolog/monolog": "^1.23",
-        "a3gz/chubby-view": "dev-master"
+        "a3gz/chubby-view": "^2"
     },
     "autoload": {
         "psr-4": {
             "Templates\\": "./app/views/templates"
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
