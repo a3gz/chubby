@@ -1,7 +1,7 @@
 <?php
 // Allow only command line calls
 $__sapiName = php_sapi_name();
-if ( PHP_SAPI !== 'cli' ) {
+if (PHP_SAPI !== 'cli') {
   echo "Invalid environment. {$__sapiName}";
   die();
 }
