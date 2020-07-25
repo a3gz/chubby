@@ -1,7 +1,11 @@
 <?php
+error_reporting(E_ALL & ~E_NOTICE);
+
 return [
-  'displayErrorDetails' => true,
-  'addContentLengthHeader' => false,
+  'settings' => [
+    'displayErrorDetails' => true,
+    'addContentLengthHeader' => false,
+  ],
 ];
 
 // EOF

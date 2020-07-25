@@ -15,8 +15,8 @@ if (defined('CONSOLE') && defined('CONSOLE_ROUTES_PATH')) {
 }
 
 __chubbyIncludeRoutes($__['path']);
-unset($__);
-$APP->run();
+unset($__); // Destroy all the temporary global variables.
+$APP->run(); // Run Slim, run!
 
 /***************************************************************/
 function __chubbyIncludeRoutes($basePath) {

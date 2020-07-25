@@ -8,5 +8,4 @@ services:
       - 9999:80
     volumes:
       - .:/var/www/html
-      # Prevent the vendor directory from being overridden by the volume mount
       - /var/www/html/src/vendor
