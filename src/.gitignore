@@ -1,5 +1,0 @@
-.gitignore
-composer.lock
-*.log
-config.local
-vendor

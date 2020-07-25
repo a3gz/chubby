@@ -1,1 +1,7 @@
-vendor/*
+/Dockerfile
+/docker-compose.yml.sample
+/vendor
+/src/composer.lock
+/src/*.log
+/src/config.local
+/src/vendor
