@@ -8,6 +8,6 @@ if (PHP_SAPI !== 'cli') {
 define('CONSOLE', true);
 unset($__sapiName);
 
-include 'index.php';
+include __DIR__ . '/index.php';
 
 // EOF
