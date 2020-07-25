@@ -1,7 +1,7 @@
+*.log
 /Dockerfile
 /docker-compose.yml
 /vendor
 /src/composer.lock
-/src/*.log
 /src/config.local
 /src/vendor
