@@ -1,12 +1,12 @@
 <chubby-styles>
   <style>
-  footer {
-    max-width: 600px;
-    margin: 0 auto;
-    border-top: 1px solid gray;
-    text-align: center;
-    padding: 1em;
-  }
+    footer {
+      max-width: 600px;
+      margin: 0 auto;
+      border-top: 1px solid gray;
+      text-align: center;
+      padding: 1em;
+    }
   </style>
 </chubby-styles>
 

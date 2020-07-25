@@ -1,6 +1,6 @@
 <chubby-scripts>
   <script>
-  console.log('Hello', '<?php echo $this->name; ?>');
+    console.log('Hello', '<?php echo $this->name; ?>');
   </script>
 </chubby-scripts>
 
@@ -11,8 +11,9 @@
       margin: 0 auto;
       padding: 2em 0 2em 0;
     }
+
     .hello strong {
-      color: blue; 
+      color: blue;
       font-size: 16px;
       padding: 0;
       margin: 0;
@@ -23,4 +24,3 @@
 <div class="hello">
   <strong><?php echo "Hello {$this->name}!"; ?></strong>
 </div>
-
