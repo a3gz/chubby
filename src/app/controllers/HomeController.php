@@ -7,8 +7,10 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 class HomeController {
   public function home(Request $request, Response $response) {
+    global $APP;
+    $router = $APP->getContainer()->get('router');
     return $response->withRedirect(
-      $this->router->pathFor('hello', ['name' => 'anonymous'])
+      $router->pathFor('hello', ['name' => 'anonymous'])
     );
   }
 } // class
