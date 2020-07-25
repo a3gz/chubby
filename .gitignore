@@ -1,5 +1,5 @@
 /Dockerfile
-/docker-compose.yml.sample
+/docker-compose.yml
 /vendor
 /src/composer.lock
 /src/*.log

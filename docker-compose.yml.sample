@@ -1,0 +1,11 @@
+version: '3.2'
+services:
+  app:
+    container_name: chubby-app
+    restart: always
+    build: .
+    ports:
+      - 9999:80
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/src/vendor
