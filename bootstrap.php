@@ -27,32 +27,4 @@ define('CONSOLE_ROUTES_PATH', APP_PATH . '/routes/console');
 
 include VENDOR_PATH . '/autoload.php';
 
-$__ = [];
-
-/**
- * Grab config.php and use those settings to create the Slim application.
- */
-$__['cfgPath'] = CONFIG_PATH;
-$__['config'] = include($__['cfgPath'] . '/config.php');
-
-$APP = new \Slim\App($__['config']);
-
-$__['container'] = $APP->getContainer();
-$__['dir'] = scandir($__['cfgPath']);
-/**
- * If loading order is important, we can prefix all configuration files
- * (except for config.php) with a number and a dash, like so: 001-file1.php,
- * 002-file2.php, etc.
- * The prefix will be removed so only the part of the name after the first
- * dash will be considered as the file's real name.
- */
-sort($__['dir']);
-foreach ($__['dir'] as $__fileName) {
-  if ((substr($__fileName, 0, 1) == '.') || ($__fileName == 'config.php')) continue;
-  $__fullFileName = "{$__['cfgPath']}/{$__fileName}";
-  if (is_readable($__fullFileName)) {
-    $__fileName = preg_replace('#^[0-9]+-#', '', $__fileName);
-    $__key = substr($__fileName, 0, -4); // Remove the file extension
-    $__['container'][$__key] = include $__fullFileName;
-  }
-}
+\Fat\Factory\AppFactory::create();

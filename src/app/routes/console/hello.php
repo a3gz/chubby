@@ -1,5 +1,4 @@
 <?php
-
 \Fat\Factory\AppFactory::getApp()
   ->get(
     '/hello/{name}',
