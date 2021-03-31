@@ -22,5 +22,6 @@
 </chubby-styles>
 
 <div class="hello">
-  <strong><?php echo "Hello {$this->name}!"; ?></strong>
+  <p><strong><?php echo "Hello {$this->name}!"; ?></strong></p>
+  <p>Open this page's source code to see how in-line styles and scripts were embedded in the final HTML document.</p>
 </div>
