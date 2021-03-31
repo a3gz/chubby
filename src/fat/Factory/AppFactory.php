@@ -8,6 +8,9 @@ use Slim\Interfaces\MiddlewareDispatcherInterface;
 use Slim\Interfaces\RouteCollectorInterface;
 use Slim\Interfaces\RouteResolverInterface;
 use Slim\Factory\AppFactory as SlimAppFactory;
+use Slim\Exception\HttpMethodNotAllowedException;
+use Slim\Exception\HttpNotFoundException;
+use Fat\Helpers\DefaultErrorHandlerSettings;
 use Fat\App;
 
 class AppFactory {
@@ -46,6 +49,38 @@ class AppFactory {
       $routeResolver,
       $middlewareDispatcher
     );
+
+    if ($container->has('appBasePath')) {
+      $this->slim->setBasePath($container->get('appBasePath'));
+    }
+    if ($container->has('errorHandler')) {
+      $errorHandlerSettings = $container->get('errorHandler');
+    }
+    if (!isset($errorHandlerSettings) || !is_array($errorHandlerSettings)) {
+      $errorHandlerSettings = [];
+    }
+    $errorHandlerSettings = array_merge(
+      DefaultErrorHandlerSettings::asArray(),
+      $errorHandlerSettings,
+    );
+    $errorMiddleware = $this->slim->addErrorMiddleware(
+      $errorHandlerSettings['displayErrorDetails'],
+      $errorHandlerSettings['logErrors'],
+      $errorHandlerSettings['logErrorDetails']
+    );
+
+    if ($container->has('notFoundHandler')) {
+      $errorMiddleware->setErrorHandler(
+        HttpNotFoundException::class,
+        $container->get('notFoundHandler')
+      );
+    }
+    if ($container->has('methodNotAllowedHandler')) {
+      $errorMiddleware->setErrorHandler(
+        HttpMethodNotAllowedException::class,
+        $container->get('methodNotAllowedHandler')
+      );
+    }
     return $this;
   }
 
@@ -78,7 +113,16 @@ class AppFactory {
     $cfgRoot = CONFIG_PATH;
     $cfgFiles = scandir($cfgRoot);
 
-    $container->set('config', include("{$cfgRoot}/config.php"));
+    $mainConfigFile = "{$cfgRoot}/config.php";
+    if (!is_readable($mainConfigFile)) {
+      throw new \Exception(
+        'Required config file is missing: src/app/config/config.php'
+      );
+    }
+    $settings = include($mainConfigFile);
+    foreach ($settings as $key => $value) {
+      $container->set($key, $value);
+    }
 
     sort($cfgFiles);
     foreach ($cfgFiles as $fileName) {
