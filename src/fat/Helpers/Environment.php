@@ -44,7 +44,7 @@ class Environment {
   static public function mockConsole(array $data = []) {
     $argv = $GLOBALS['argv'];
     array_shift($argv);
-    $pathInfo = implode('/', $argv);
+    $pathInfo = $argv[0];
     if (substr($pathInfo, 0, 1) !== '/') {
       $pathInfo = '/' . $pathInfo;
     }
