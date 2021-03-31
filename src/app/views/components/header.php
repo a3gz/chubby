@@ -15,5 +15,7 @@
 </chubby-styles>
 <header>
   <h1>Welcome to Chubby</h1>
-  <strong>An application template for Slim 3</strong>
+  <strong>A minimally opinionated application boilerplate for Slim 4</strong>
+  <br />
+  <small>Works with Slim 4.3.0</small>
 </header>
