@@ -71,7 +71,7 @@ Chubby will inject the dependency in Slim's container under the same name as the
 ## Slim 4
 
 Chubby version `^2` depends on Slim `4.3.0` to keep PHP requirement down to `PHP 7.1`.
-If a higher version of PHP is available, changing Slim dependency version to `^4` should work since we'e still in the same major version... but I haven't tried this yet.
+If a higher version of PHP is available, changing Slim dependency version to `^4` should work since we are still in the same major version... but I haven't tried this yet.
 
 This version is more opinionated that Chubby `^1` because some of the things that were taken care of by Slim are now under our control.
 The new directory `src/fat` contains classes that help with:
