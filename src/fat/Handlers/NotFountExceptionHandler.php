@@ -12,7 +12,9 @@ class NotFountExceptionHandler {
     bool $displayErrorDetails
   ) {
     $response = new Response();
-    $response->getBody()->write('404 NOT FOUND');
+    $tpl = new \Templates\DefaultTemplate(APP_PATH . '/');
+    $tpl->define('content', 'views/components/404.php')
+      ->write($response);
     return $response->withStatus(404);
   }
 }
