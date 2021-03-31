@@ -1,11 +1,18 @@
 <?php
+/**
+ * Slim Framework (https://slimframework.com)
+ *
+ * @link      https://github.com/slimphp/Slim
+ * @copyright Copyright (c) 2011-2017 Josh Lockhart
+ * @license   https://github.com/slimphp/Slim/blob/3.x/LICENSE.md (MIT License)
+ */
 
 namespace Fat\Helpers;
 
 class Environment {
   static public function mock(array $data) {
-    if ((isset($userData['HTTPS']) && $userData['HTTPS'] !== 'off') ||
-      ((isset($userData['REQUEST_SCHEME']) && $userData['REQUEST_SCHEME'] === 'https'))
+    if ((isset($data['HTTPS']) && $data['HTTPS'] !== 'off') ||
+      ((isset($data['REQUEST_SCHEME']) && $data['REQUEST_SCHEME'] === 'https'))
     ) {
       $defscheme = 'https';
       $defport = 443;
@@ -34,14 +41,14 @@ class Environment {
     ], $data, $_SERVER);
   }
 
-  static public function mockConsole() {
+  static public function mockConsole(array $data = []) {
     $argv = $GLOBALS['argv'];
     array_shift($argv);
     $pathInfo = implode('/', $argv);
     if (substr($pathInfo, 0, 1) !== '/') {
       $pathInfo = '/' . $pathInfo;
     }
-    self::mock(['REQUEST_URI' => $pathInfo]);  
+    self::mock(array_merge($data, ['REQUEST_URI' => $pathInfo]));
   }
 }
 
