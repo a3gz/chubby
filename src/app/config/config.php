@@ -2,10 +2,16 @@
 error_reporting(E_ALL & ~E_NOTICE);
 
 return [
-  'settings' => [
+  'errorHandler' => [
     'displayErrorDetails' => true,
-    'addContentLengthHeader' => false,
+    'logError' => true,
+    'logErrorDetails' => true,
   ],
+  // 'notFoundHandler' => function($container) {
+  //   return \Fat\Handlers\NotFountExceptionHandler::class . ':notFound';
+  // },
+  // 'methodNotAllowedHandler' => function($container) {
+  //   return \Fat\Handlers\MethodNotAllowedExceptionHandler::class . ':methodNotAllowed';
+  // },
 ];
-
 // EOF
