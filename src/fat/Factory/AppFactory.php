@@ -10,7 +10,6 @@ use Slim\Interfaces\RouteResolverInterface;
 use Slim\Factory\AppFactory as SlimAppFactory;
 use Slim\Exception\HttpMethodNotAllowedException;
 use Slim\Exception\HttpNotFoundException;
-use Fat\Helpers\DefaultErrorHandlerSettings;
 use Fat\App;
 
 class AppFactory {
@@ -60,7 +59,11 @@ class AppFactory {
       $errorHandlerSettings = [];
     }
     $errorHandlerSettings = array_merge(
-      DefaultErrorHandlerSettings::asArray(),
+      [
+        'displayErrorDetails' => true,
+        'logErrors' => true,
+        'logErrorDetails' => true,
+      ],
       $errorHandlerSettings,
     );
     $errorMiddleware = $this->slim->addErrorMiddleware(
