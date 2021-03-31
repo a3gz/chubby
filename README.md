@@ -1,9 +1,9 @@
 # Chubby
 Adding some fat to [Slim Framework](https://github.com/slimphp/Slim).
 
-Chubby provides a working Slim application template around which additional fat is added in the form of modules. 
+Chubby provides a working Slim application template around which additional fat is added in two ways: (1) useful classes under the `fat` directory and (2) as modules. 
 
-The first of these modules is [Chubby View](https://github.com/a3gz/chubby-view), a PHP renderer that offers a very convenient way of organizing code. 
+The first of these modules is [Chubby View](https://github.com/a3gz/chubby-view), a renderer that proposes a very convenient way of organizing code. 
 
 ## Install via Composer 
 
@@ -43,21 +43,19 @@ The provided `docker-compose.yml` maps to the host's 9999 port so you should be 
 
 ## Console request
 
-    php console.php path to resource
-
-The above command will invoke the route: `/path/to/resource`.
+    php console.php path/to/resource
 
 ## Why Chubby at all?
 
-Chubby is a working application template that offers one possible implementation of the application structure proposed in Slim's documentation. 
+Chubby is a working application template that offers one possible way to organize a Slim application. 
 
 Around that idea Chubby sets the foundations to split the application files in a way that the code can be placed outside the `public_html` directory, among other things. 
 
 ### Configuration
 
-Chubby assumes the existence of a `src/app/config` directory containing at least one file called `config.php`. This file should return an associateive array with settings that will be passed to the Slim application's constructor. 
+Chubby assumes the existence of a `src/app/config` directory containing at least one file called `config.php`. This file should return an associateive array with settings that will be injected in the container. 
 
-Optionally we can provide Slim with additional dependencies by adding more files inside the `config` directory. Each file must return one dependency. Take the provided `logger.php` for instance: 
+Optionally we can inject additional dependencies by adding more files inside the `config` directory. Each file must return one dependency. Take the provided `logger.php` for instance: 
 
     return function($c) {
         $appName =  basename(PUBLIC_APP_PATH);
@@ -68,7 +66,20 @@ Optionally we can provide Slim with additional dependencies by adding more files
         return $logger;   
     };
 
-Chubby will inject the dependency in Slim's container under the same name as the file, in this case: `logger`: `$container['logger']`.
+Chubby will inject the dependency in the container under the same name as the file, in this case: `logger`: `$container['logger']`.
+
+## Slim 4
+
+Chubby version `^2` depends on Slim `4.3.0` to keep PHP requirement down to `PHP 7.1`.
+If a higher version of PHP is available, changing Slim dependency version to `^4` should work since we are still in the same major version... but I haven't tried this yet.
+
+This version is more opinionated that Chubby `^1` because some of the things that were taken care of by Slim are now under our control.
+The new directory `src/fat` contains classes that help with:
+
+ * Initiating the `App`.
+ * Adding an error handler.
+ * Solving `HttpNotFoundException` in a way that makes it easy to customize by simply editing `config.php`.
+ * Bringing back Slim3's `Environment::mock()` to make console requests possible by mocking an HTTP request.
 
 ## Contact the author
 
