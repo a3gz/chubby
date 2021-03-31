@@ -2,7 +2,7 @@
 \Fat\Factory\AppFactory::getApp()
   ->get(
     '/hello/{name}',
-    \Controllers\HelloController::class . ':hello'
-  )->setName('hello');
+    \Controllers\ConsoleController::class . ':hello'
+  );
 
 // EOF
