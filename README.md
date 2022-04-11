@@ -58,7 +58,7 @@ Chubby assumes the existence of a `src/app/config` directory containing at least
 Optionally we can inject additional dependencies by adding more files inside the `config` directory. Each file must return one dependency. Take the provided `logger.php` for instance: 
 
     return function($c) {
-        $appName =  basename(PUBLIC_APP_PATH);
+        $appName =  basename(PUBLIC_PATH);
         $logFileName = dirname(__DIR__) . "/{$appName}.local.log"; 
         $logger = new \Monolog\Logger($appName);
         $file_handler = new \Monolog\Handler\StreamHandler( $logFileName );
