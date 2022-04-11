@@ -10,6 +10,6 @@ class HomeController {
   public function home(Request $request, Response $response) {
     return ResponseTools::withRedirect($response, 'hello/anonymous');
   }
-} // class
+}
 
 // EOF

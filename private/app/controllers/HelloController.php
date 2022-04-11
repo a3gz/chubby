@@ -19,6 +19,6 @@ class HelloController {
       ->write($response);
     return $response;
   }
-} // class
+}
 
 // EOF

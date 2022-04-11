@@ -10,9 +10,10 @@
     },
     "autoload": {
         "psr-4": {
-            "Controllers\\": "./app/controllers",
-            "Templates\\": "./app/views/templates",
-            "Fat\\": "./fat"
+            "App\\": "./app",
+            "Templates\\": "./app/templates",
+            "Core\\": "./core",
+            "Fat\\": "./core/fat"
         }
     },
     "require-dev": {

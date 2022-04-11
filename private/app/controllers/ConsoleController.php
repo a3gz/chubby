@@ -16,6 +16,6 @@ class ConsoleController {
     echo "\nHello {$name}\n";
     return $response;
   }
-} // class
+}
 
 // EOF

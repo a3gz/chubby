@@ -8,7 +8,7 @@ class DefaultTemplate extends \Chubby\View\Template {
     'footer'    => 'views/components/footer.php',
   ];
 
-  protected $template = 'views/templates/default-template.php';
-} // class
+  protected $template = 'templates/default-template.php';
+}
 
 // EOF
