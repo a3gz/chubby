@@ -153,14 +153,22 @@ class AppFactory {
     }
   }
 
-  static public function loadRoutes($basePath) {
+  static public function loadRoutes(string $basePath) {
+    $default = is_dir($basePath) ? [$basePath] : [];
+    $routes = $GLOBALS['hooks']->apply_filters('chubby_routes', $default);
+    foreach ($routes as $basePath) {
+      self::__loadRoutes($basePath);
+    }
+  }
+
+  static private function __loadRoutes(string $basePath) {
     $dir = scandir($basePath);
     foreach($dir as $fileName) {
       if (substr($fileName, 0, 1) == '.') continue;
       $absFileName = "{$basePath}/{$fileName}";
       if (is_dir($absFileName)) {
         if (!is_readable(realpath("{$absFileName}/.ignore"))) {
-          self::loadRoutes($absFileName);
+          self::__loadRoutes($absFileName);
         }
       } elseif (is_readable($absFileName)) {
         include $absFileName;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Templates;
+namespace Plugins\demo\templates;
 
 class DefaultTemplate extends \Chubby\View\Template {
   protected $components = [

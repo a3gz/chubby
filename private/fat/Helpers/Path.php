@@ -3,6 +3,13 @@
 namespace Fat\Helpers;
 
 class Path {
+  static public function makeAppPath(string $x = '') {
+    if (!empty($x) && substr($x, 0, 1) !== '/') {
+      $x = "/{$x}";
+    }
+    return APP_PATH . $x;
+  }
+
   static public function makePrivatePath(string $x = '') {
     if (!empty($x) && substr($x, 0, 1) !== '/') {
       $x = "/{$x}";
