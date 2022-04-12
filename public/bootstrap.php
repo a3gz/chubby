@@ -5,14 +5,9 @@ defined('PRIVATE_PATH') || define(
   'PRIVATE_PATH',
   dirname(__DIR__) . '/private'
 );
-
-defined('THEMES_ROOT') || define(
-  'THEMES_ROOT',
-  PUBLIC_PATH . '/assets/themes'
-);
-
 // Directories usually kept in the private directory.
 defined('APP_PATH') || define('APP_PATH', PRIVATE_PATH . '/app');
+defined('ETC_PATH') || define('ETC_PATH', PRIVATE_PATH . '/etc');
 defined('VENDOR_PATH') || define(
   'VENDOR_PATH',
   PRIVATE_PATH . '/vendor'

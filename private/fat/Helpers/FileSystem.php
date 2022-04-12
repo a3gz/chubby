@@ -28,6 +28,14 @@ class FileSystem {
     return $r;
   }
 
+  public function createDir(string $path, $permissions = 0755) {
+    $r = true;
+    if (!is_dir($path)) {
+      $r = mkdir($path, $permissions, true);
+    }
+    return $r;
+  }
+
   public function getSubDirectories($base) {
     $dir = scandir($base);
     $r = [];
@@ -62,15 +70,6 @@ class FileSystem {
       $o = new FileSystem();
     }
     return $o;
-  }
-
-  public function withDefinitions(array $defs) {
-    if (!is_array($defs)) {
-      $defs = [$defs];
-    }
-    $clone = clone $this;
-    $clone->urls = array_merge($clone->urls, $defs);
-    return $clone;
   }
 }
 

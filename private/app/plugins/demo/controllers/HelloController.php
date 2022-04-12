@@ -15,7 +15,7 @@ class HelloController {
     $name = $request->getAttribute('name');
     $logger->notice("Hello {$name}!");
     $tpl = new DefaultTemplate(realpath(dirname(__DIR__)));
-    $tpl->define('content', 'views/components/hello')
+    $tpl->define('content', "views/components/hello")
       ->setData(['name' => $name])
       ->write($response);
     return $response;

@@ -10,6 +10,21 @@ class Path {
     return APP_PATH . $x;
   }
 
+  static public function makeEtcPath(string $x = '') {
+    if (!empty($x) && substr($x, 0, 1) !== '/') {
+      $x = "/{$x}";
+    }
+    return ETC_PATH . $x;
+  }
+
+  static public function makePluginsPath(string $x = '') {
+    if (!empty($x) && substr($x, 0, 1) !== '/') {
+      $x = "/{$x}";
+    }
+    $r = self::makeAppPath("/plugins{$x}");
+    return $r;
+  }
+
   static public function makePrivatePath(string $x = '') {
     if (!empty($x) && substr($x, 0, 1) !== '/') {
       $x = "/{$x}";

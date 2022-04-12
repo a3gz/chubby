@@ -5,7 +5,9 @@ $GLOBALS['_APP_'] = \Fat\Factory\AppFactory::getApp();
 if (defined('BASE_PATH')) {
   $GLOBALS['_APP_']->setBasePath(BASE_PATH);
 }
-\Fat\Helpers\Plugins::init();
+$__pluginsLoader = \Fat\Factory\HelpersFactory::makePluginsLoader();
+$__pluginsLoader->init();
+unset($__pluginsLoader);
 
 if (defined('CONSOLE') && defined('CONSOLE_ROUTES_PATH')) {
   \Fat\Helpers\Environment::mockConsole();

@@ -1,8 +1,8 @@
 <?php
 
 /**
- * type: Plugin
  * name: Chubby demo
+ * type: Plugin
  */
 
 $GLOBALS['hooks']->add_filter('chubby_routes', function ($locations) {

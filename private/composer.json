@@ -4,7 +4,6 @@
     "require": {
         "slim/slim": "4.3.0",
         "monolog/monolog": "^1.23",
-        "a3gz/chubby-view": "^2",
         "php-di/php-di": "6.0.11",
         "slim/psr7": "^1.3",
         "bainternet/php-hooks": "^1.0"
