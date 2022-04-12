@@ -11,7 +11,11 @@ class HelloController {
   public function hello(Request $request, Response $response) {
     $app = AppFactory::getApp();
     $logger = $app->getContainer()->get('logger');
-
+    if (isset($_GET['theme'])) {
+      $GLOBALS['hooks']->add_filter('chubby_theme', function () {
+        return $_GET['theme'];
+      });
+    }
     $name = $request->getAttribute('name');
     $logger->notice("Hello {$name}!");
     $tpl = new DefaultTemplate(realpath(dirname(__DIR__)));

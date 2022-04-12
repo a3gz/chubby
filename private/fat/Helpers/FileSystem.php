@@ -53,7 +53,7 @@ class FileSystem {
     $r = [];
     foreach ($dir as $fileName) {
       $absName = "{$base}/{$fileName}";
-      if (!is_dir($absName)) {
+      if (is_file($absName)) {
         $r[] = $absName;
       }
     }

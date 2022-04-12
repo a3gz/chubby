@@ -58,12 +58,9 @@ class Template {
     $this->basePath = rtrim($basePath, '/');
     // Merge components from the child class
     $class = get_called_class();
-    while ($class = get_parent_class($class)) {
-      $components = get_class_vars($class)['components'];
-      $clean = [];
-      foreach ($components as $name => $path) {
-        $this->define($name, $path);
-      }
+    $components = get_class_vars($class)['components'];
+    foreach ($components as $name => $path) {
+      $this->define($name, $path);
     }
     // Complete the template file name
     $this->template = $this->getPreparedPath($this->template);
@@ -244,7 +241,6 @@ class Template {
     }
 
     ob_start();
-    echo '<!--Required scripts-->';
     echo '<chubby-scripts>';
     foreach ($pathsArray as $path) {
       if (substr($path, 0, 4) !== 'http') {
@@ -268,15 +264,11 @@ class Template {
     }
 
     ob_start();
-    echo '<!--Required styles-->';
     echo '<chubby-styles>';
     foreach ($pathsArray as $path) {
-      if (substr($path, 0, 4) !== 'http') {
-        continue;
-      }
       if (!isset($this->requiredStyles[$path])) {
         $this->requiredStyles[$path] = 'ok';
-        echo "<link type=\"text/css\" href=\"{$path}\" />\n";
+        echo "<link rel=\"stylesheet\" href=\"{$path}\" />\n";
       }
     }
     echo "\n</chubby-styles>";
