@@ -6,7 +6,7 @@ return [
     'logErrorDetails' => true,
   ],
   'notFoundHandler' => function($container) {
-    return \Fat\Handlers\NotFountExceptionHandler::class . ':notFound';
+    return \Plugins\demo\controllers\NotFountExceptionHandler::class . ':notFound';
   },
   // 'methodNotAllowedHandler' => function($container) {
   //   return \Fat\Handlers\MethodNotAllowedExceptionHandler::class . ':methodNotAllowed';

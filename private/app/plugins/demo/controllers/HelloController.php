@@ -5,6 +5,7 @@ namespace Plugins\demo\controllers;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Fat\Factory\AppFactory;
+use Fat\Helpers\Path;
 use Plugins\demo\templates\DefaultTemplate;
 
 class HelloController {
@@ -18,7 +19,7 @@ class HelloController {
     }
     $name = $request->getAttribute('name');
     $logger->notice("Hello {$name}!");
-    $tpl = new DefaultTemplate(realpath(dirname(__DIR__)));
+    $tpl = new DefaultTemplate(Path::makePluginsPath('/demo'));
     $tpl->define('content', "views/components/hello")
       ->setData(['name' => $name])
       ->write($response);

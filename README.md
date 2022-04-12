@@ -102,6 +102,17 @@ The new directory `src/fat` contains classes that help with:
 Version 3 includes hooks and plugins support. Plugins are expected to extist under `private/app/plugins`. Each plugin must have a file called the same as the plugin's directory. This file must include a header section with at least one entry: `type` which value must be `Plugin` for the plugins loader to recognize it as such.
 Check the demo plugin to see how it works.
 
+## Themes
+
+Version 3 includes themes support.
+Themes can be customized in two levels: **styles** and **views**.
+We can create different stylesheets to change a Web site theme and use the default views. A step further would be to also create custom views for each theme.
+
+In most situations creating stylesheets would be enough but if we also want to change the layout of a view then we need to create specific views for each theme.
+Note that we only need to create theme specific views for the views we want to override. If we don't override a view, the default one is automatically used.
+
+Check the demo to see hot this works.
+
 ## Contact the author
 
 I would welcome comments, suggestions and brainstorming-like ideas.
