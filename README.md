@@ -102,6 +102,13 @@ The new directory `src/fat` contains classes that help with:
 Version 3 includes hooks and plugins support. Plugins are expected to extist under `private/app/plugins`. Each plugin must have a file called the same as the plugin's directory. This file must include a header section with at least one entry: `type` which value must be `Plugin` for the plugins loader to recognize it as such.
 Check the demo plugin to see how it works.
 
+### Built-in hooks
+
+Name | Description
+--- | ---
+chubby_fallback_theme | The name of the fallback theme. If this filter isn't implemented, the falback theme name is `default`.
+chubby_theme | Name of the applied theme. Fallbacks to the fallback theme.
+
 ## Themes
 
 Version 3 includes themes support.

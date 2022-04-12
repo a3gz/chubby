@@ -16,4 +16,6 @@ if (defined('CONSOLE') && defined('CONSOLE_ROUTES_PATH')) {
   \Fat\Factory\AppFactory::loadRoutes(ROUTES_PATH);
 }
 
+$GLOBALS['hooks']->do_action('chubby_before_run');
 $GLOBALS['_APP_']->run();
+$GLOBALS['hooks']->do_action('chubby_after_run');

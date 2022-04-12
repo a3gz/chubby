@@ -10,7 +10,7 @@ namespace Fat\Helpers;
 class Template {
   protected $basePath;
   protected $components = [];
-  protected $fallbackTheme;
+  protected $fallbackTheme = 'default';
   protected $renderedComponents = [];
 
   protected $bundledStyles = [];
@@ -53,8 +53,7 @@ class Template {
     'chubby-styles' => [],
   ];
 
-  public function __construct($basePath = null, $fallbackTheme = 'default') {
-    $this->fallbackTheme = $fallbackTheme;
+  public function __construct($basePath = null) {
     $this->basePath = rtrim($basePath, '/');
     // Merge components from the child class
     $class = get_called_class();
@@ -156,12 +155,13 @@ class Template {
     if (!preg_match('#^.+(.php|.html)$#', $path)) {
       $path .= '.php';
     }
+    $fallbackTheme = $this->getFallbackTheme();
     $themeName = $this->getThemeName();
     $themePath = "themes/{$themeName}/{$path}";
     $prepared = $this->getPreparedPath($themePath);
     if (!is_readable($prepared)) {
-      if ($themeName !== $this->fallbackTheme) {
-        $themePath = "themes/{$this->fallbackTheme}/{$path}";
+      if ($themeName !== $fallbackTheme) {
+        $themePath = "themes/{$fallbackTheme}/{$path}";
         $prepared = $this->getPreparedPath($themePath);
       }
       if (!is_readable($prepared)) {
@@ -177,6 +177,13 @@ class Template {
     return $this;
   }
 
+  protected function getFallbackTheme() {
+    return $GLOBALS['hooks']->apply_filters(
+      'chubby_fallback_theme',
+      $this->fallbackTheme
+    );
+  }
+
   protected function getPreparedPath($path) {
     if (substr($path, 0, 1) != '/') {
       $basePath = '';
@@ -189,9 +196,10 @@ class Template {
   }
 
   public function getThemeName() {
+    $fallbackTheme = $this->getFallbackTheme();
     return $GLOBALS['hooks']->apply_filters(
       'chubby_theme',
-      $this->fallbackTheme
+      $fallbackTheme
     );
   }
 

@@ -5,11 +5,12 @@ return [
     'logError' => true,
     'logErrorDetails' => true,
   ],
-  'notFoundHandler' => function($container) {
+  'notFoundHandler' => function ($container) {
     return \Plugins\demo\controllers\NotFountExceptionHandler::class . ':notFound';
   },
   // 'methodNotAllowedHandler' => function($container) {
   //   return \Fat\Handlers\MethodNotAllowedExceptionHandler::class . ':methodNotAllowed';
   // },
 ];
+
 // EOF
