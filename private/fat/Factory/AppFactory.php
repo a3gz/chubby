@@ -15,11 +15,6 @@ use Fat\App;
 class AppFactory {
   protected $slim;
 
-  static public function create() {
-    $instance = self::instance();
-    return $instance->getSlim();
-  }
-
   protected function createSlimApp() {
     $container = new \DI\Container();
     $this->loadConfig($container);
@@ -107,29 +102,29 @@ class AppFactory {
   /**
    * Load config files
    * If loading order is important, we can prefix all the configuration files
-   * (except for config.php) with a number and a dash, like so: 001-file1.php,
+   * (except for main.php) with a number and a dash, like so: 001-file1.php,
    * 002-file2.php, etc.
    * The prefix will be removed so only the part of the name after the first
    * dash will be considered as the file's real name.
    */
   protected function loadConfig($container) {
-    $cfgRoot = CONFIG_PATH;
+    $cfgRoot = CONFIG_PATH . '/container';
     $cfgFiles = scandir($cfgRoot);
 
-    $mainConfigFile = "{$cfgRoot}/config.php";
-    if (!is_readable($mainConfigFile)) {
+    $mainConfig = "{$cfgRoot}/main.php";
+    if (!is_readable($mainConfig)) {
       throw new \Exception(
-        'Required config file is missing: src/app/config/config.php'
+        'Required config file is missing: src/app/config/main.php'
       );
     }
-    $settings = include($mainConfigFile);
+    $settings = include($mainConfig);
     foreach ($settings as $key => $value) {
       $container->set($key, $value);
     }
 
     sort($cfgFiles);
     foreach ($cfgFiles as $fileName) {
-      if ((substr($fileName, 0, 1) == '.') || ($fileName == 'config.php')) {
+      if ((substr($fileName, 0, 1) == '.') || ($fileName == 'main.php')) {
         continue;
       }
       $absFileName = "{$cfgRoot}/{$fileName}";
@@ -137,6 +132,23 @@ class AppFactory {
         $fileName = preg_replace('#^[0-9]+-#', '', $fileName);
         $key = substr($fileName, 0, -4);
         $container->set($key, include $absFileName);
+      }
+    }
+
+    self::loadNonContainerConfig();
+  }
+
+  static protected function loadNonContainerConfig() {
+    $cfgRoot = CONFIG_PATH . '/settings';
+    $cfgFiles = scandir($cfgRoot);
+    sort($cfgFiles);
+    foreach ($cfgFiles as $fileName) {
+      if ((substr($fileName, 0, 1) == '.') || ($fileName == 'container')) {
+        continue;
+      }
+      $absFileName = "{$cfgRoot}/{$fileName}";
+      if (is_file($absFileName) && is_readable($absFileName)) {
+        include $absFileName;
       }
     }
   }

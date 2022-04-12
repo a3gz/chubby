@@ -13,7 +13,7 @@
             "App\\": "./app",
             "Templates\\": "./app/templates",
             "Core\\": "./core",
-            "Fat\\": "./core/fat"
+            "Fat\\": "./fat"
         }
     },
     "require-dev": {

@@ -1,8 +1,9 @@
 <?php
+defined('BASE_PATH') || define('BASE_PATH', '/public');
 defined('PUBLIC_PATH') || define('PUBLIC_PATH',   __DIR__);
 defined('PRIVATE_PATH') || define(
   'PRIVATE_PATH',
-   dirname(__DIR__) . '/private'
+  dirname(__DIR__) . '/private'
 );
 
 defined('THEMES_ROOT') || define(
@@ -29,5 +30,3 @@ defined('LOG_PATH') || define('LOG_PATH', PRIVATE_PATH . '/log');
 define('CONSOLE_ROUTES_PATH', APP_PATH . '/routes/console');
 
 include VENDOR_PATH . '/autoload.php';
-
-\Fat\Factory\AppFactory::create();

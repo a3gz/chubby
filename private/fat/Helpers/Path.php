@@ -1,0 +1,21 @@
+<?php
+
+namespace Fat\Helpers;
+
+class Path {
+  static public function makePrivatePath(string $x = '') {
+    if (!empty($x) && substr($x, 0, 1) !== '/') {
+      $x = "/{$x}";
+    }
+    return PRIVATE_PATH . $x;
+  }
+
+  static public function makePublicPath(string $x = '') {
+    if (!empty($x) && substr($x, 0, 1) !== '/') {
+      $x = "/{$x}";
+    }
+    return PUBLIC_PATH . $x;
+  }
+}
+
+// EOF
