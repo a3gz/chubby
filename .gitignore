@@ -2,6 +2,7 @@
 /Dockerfile
 /docker-compose.yml
 /vendor
-/src/composer.lock
-/src/config.local
-/src/vendor
+/private/etc
+/private/vendor
+/private/composer.lock
+/private/config.local

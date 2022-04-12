@@ -13,11 +13,11 @@ Go to the directory where you want the new application to sit, then create the p
 
 This will create a new project called `chubby`.
 
-Once the project has been created you can safely delete the `chubby/composer.json` file and the `chubby/vendor` directory. **Don't delete the file `chubby/src/composer.json` thought, this one is wher you add your dependencies**.
+Once the project has been created you can safely delete the `chubby/composer.json` file and the `chubby/vendor` directory. **Don't delete the file `chubby/private/composer.json` thought, this one is wher you add your dependencies**.
 
-Chubby needs all required dependencies to sit on the `src` directory:
+Chubby needs all required dependencies to sit on the `private` directory:
 
-    > cd chubby/src
+    > cd chubby/private
     > composer install
 
 Finally go to your browser and request: 
@@ -53,24 +53,40 @@ Around that idea Chubby sets the foundations to split the application files in a
 
 ### Configuration
 
-Chubby assumes the existence of a `src/app/config` directory containing at least one file called `config.php`. This file should return an associateive array with settings that will be injected in the container. 
+Chubby assumes the existence of a `private/app/config` directory containing two directories:
+`config/container` and `config/settings`.
+Under `config/container` there must extist at least one file called `main.php`. This file should return an associateive array with settings that will be injected in the container. 
 
-Optionally we can inject additional dependencies by adding more files inside the `config` directory. Each file must return one dependency. Take the provided `logger.php` for instance: 
+Optionally we can inject additional dependencies by adding more files inside the `config/container` directory. Each file must return one dependency. Take the provided `logger.php` for instance: 
 
-    return function($c) {
-        $appName =  basename(PUBLIC_APP_PATH);
-        $logFileName = dirname(__DIR__) . "/{$appName}.local.log"; 
-        $logger = new \Monolog\Logger($appName);
-        $file_handler = new \Monolog\Handler\StreamHandler( $logFileName );
-        $logger->pushHandler($file_handler);
-        return $logger;   
+    return function ($c) {
+      $time = time();
+      $year = date('Y', $time);
+      $month = date('m', $time);
+      $day = date('d', $time);
+      $hour = date('H', $time);
+      $baseDir = \Fat\Helpers\Path::makePrivatePath('/logs'
+        . '/' . $year
+        . '/' . $month
+        . '/' . $day
+      );
+      if (!is_dir($baseDir)) {
+        mkdir($baseDir, 0777, true);
+      }
+      $fileName = "{$year}m{$month}d{$day}h{$hour}.log";
+      $logFileName = "{$baseDir}/{$fileName}";
+
+      $logger = new \Monolog\Logger($appName);
+      $file_handler = new \Monolog\Handler\StreamHandler($logFileName);
+      $logger->pushHandler($file_handler);
+      return $logger;
     };
 
 Chubby will inject the dependency in the container under the same name as the file, in this case: `logger`: `$container['logger']`.
 
 ## Slim 4
 
-Chubby version `^2` depends on Slim `4.3.0` to keep PHP requirement down to `PHP 7.1`.
+Chubby version `^3` depends on Slim `4.3.0` to keep PHP requirement down to `PHP 7.1`.
 If a higher version of PHP is available, changing Slim dependency version to `^4` should work since we are still in the same major version... but I haven't tried this yet.
 
 This version is more opinionated that Chubby `^1` because some of the things that were taken care of by Slim are now under our control.
@@ -80,6 +96,29 @@ The new directory `src/fat` contains classes that help with:
  * Adding an error handler.
  * Solving `HttpNotFoundException` in a way that makes it easy to customize by simply editing `config.php`.
  * Bringing back Slim3's `Environment::mock()` to make console requests possible by mocking an HTTP request.
+
+## Hooks
+
+Version 3 includes hooks and plugins support. Plugins are expected to extist under `private/app/plugins`. Each plugin must have a file called the same as the plugin's directory. This file must include a header section with at least one entry: `type` which value must be `Plugin` for the plugins loader to recognize it as such.
+Check the demo plugin to see how it works.
+
+### Built-in hooks
+
+Name | Description
+--- | ---
+chubby_fallback_theme | The name of the fallback theme. If this filter isn't implemented, the falback theme name is `default`.
+chubby_theme | Name of the applied theme. Fallbacks to the fallback theme.
+
+## Themes
+
+Version 3 includes themes support.
+Themes can be customized in two levels: **styles** and **views**.
+We can create different stylesheets to change a Web site theme and use the default views. A step further would be to also create custom views for each theme.
+
+In most situations creating stylesheets would be enough but if we also want to change the layout of a view then we need to create specific views for each theme.
+Note that we only need to create theme specific views for the views we want to override. If we don't override a view, the default one is automatically used.
+
+Check the demo to see hot this works.
 
 ## Contact the author
 
